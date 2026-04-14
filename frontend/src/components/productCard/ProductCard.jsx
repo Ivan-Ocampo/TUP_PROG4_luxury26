@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './ProductCard.css';
+import Button from '../button/Button';
 
 const ProductCard = ({ _id, nombre, imagenUrl, descripcion, precio, categoriaId, onAddToCart }) => {
   return (
@@ -22,8 +23,8 @@ const ProductCard = ({ _id, nombre, imagenUrl, descripcion, precio, categoriaId,
         
         <div className="product-actions">
           {/* Botón para ir a la vista de Detalle */}
-          <Link to={`/producto/${_id}`} className="product-button detail-button">
-            Ver detalle
+          <Link to={`/producto/${_id}`}>
+            <Button texto="Ver detalle" color="lila" size="grande" efecto="btn-hover" />
           </Link>
           
           

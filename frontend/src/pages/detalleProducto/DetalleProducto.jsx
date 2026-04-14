@@ -37,7 +37,7 @@ const DetalleProducto = () => {
         {/* Columna Izquierda: Imagen */}
         <div className="detalle-imagen-container">
           <img 
-            src={producto.imagenUrl || 'https://via.placeholder.com/500x500?text=Joya+sin+imagen'} 
+            src={producto.imagenUrl || 'https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg'} 
             alt={`Imagen de ${producto.nombre}`} 
             className="detalle-imagen" 
           />
@@ -66,7 +66,7 @@ const DetalleProducto = () => {
             
             {/* Navegación de regreso al catálogo */}
             <Link to="/" className="btn-volver">
-              Volver al Catálogo
+              <Button texto="Volver al Catálogo" color="lila" size="grande" efecto="btn-hover" />
             </Link>
           </div>
         </div>

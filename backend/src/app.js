@@ -11,7 +11,7 @@ const ordenCompraRoutes = require('./routes/ordenCompraRoutes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({origin: 'http://localhost:5173'})); // Permitir solicitudes desde el frontend en localhost:3000
 
 app.use(express.json());
 

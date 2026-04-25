@@ -85,8 +85,13 @@ body {
   font-size: 0.9rem;
   font-weight: 600;
 }
+/*.detalle-acciones{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px; 
+}*/
 
-.detalle-producto__precio {
+    .detalle-producto__precio {
   margin: 0;
   font-size: 1.75rem;
   font-weight: 700;

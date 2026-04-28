@@ -24,6 +24,7 @@ Interfaz de usuario para el e-commerce Luxury Joyería, construida con React y V
 1.  Instala las dependencias del proyecto:
     ```bash
     npm install
+    npm intall axios     
     ```
 2.  Inicia la aplicación en modo desarrollo:
     ```bash
@@ -36,5 +37,3 @@ Interfaz de usuario para el e-commerce Luxury Joyería, construida con React y V
 * **Detalle de Producto:** Rutas dinámicas para visualizar información técnica de cada joya.
 * **Feedback de Usuario:** Spinner de carga personalizado para mejorar la UX durante peticiones asíncronas.
 * **Diseño Responsivo:** Grilla de productos adaptable mediante CSS Grid.
-README_FRONTEND.md
-Mostrando README_FRONTEND.md.

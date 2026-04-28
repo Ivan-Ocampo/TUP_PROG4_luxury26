@@ -27,6 +27,12 @@ Antes de comenzar, asegúrate de tener instalado:
 2.  Instala las dependencias necesarias:
     ```bash
     npm install
+    npm install -D nodemon
+    npm install mongoose 
+    npm install dotenv
+    npm install bcrypt
+    npm install cors
+    
     ```
 3.  Inicia el servidor en modo desarrollo:
     ```bash
@@ -42,5 +48,3 @@ Antes de comenzar, asegúrate de tener instalado:
 * `GET /api/productos/:id`: Obtiene el detalle de una joya específica.
 * `POST /api/usuarios`: Registra un nuevo usuario.
 * `POST /api/ordenes`: Crea una nueva orden de compra.
-README_BACKEND.md
-Mostrando README_BACKEND.md.

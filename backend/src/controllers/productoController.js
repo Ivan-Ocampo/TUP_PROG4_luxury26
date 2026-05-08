@@ -6,6 +6,7 @@ const crearProducto = async (req, res) => {
     await nuevoProducto.save();
     res.status(201).json({ mensaje: 'Producto creado', producto: nuevoProducto });
   } catch (error) {
+    console.error("🔥 EXPLOTÓ EL BACKEND AL CREAR. Detalles:", error);
     res.status(500).json({ mensaje: 'Error al crear producto', error: error.message });
   }
 };

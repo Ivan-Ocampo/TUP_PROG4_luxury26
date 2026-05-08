@@ -10,3 +10,8 @@ export const obtenerProductoPorId = async (id) => {
   const respuesta = await axios.get(`${API_URL}/${id}`);
   return respuesta.data;
 };
+
+export const crearProducto = async (productoData) => {
+  const respuesta = await axios.post(API_URL, productoData);
+  return respuesta.data;
+}

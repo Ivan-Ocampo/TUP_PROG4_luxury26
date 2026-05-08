@@ -1,0 +1,113 @@
+.form-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 35px;
+  background-color: #ffffff; /* Fondo bien oscuro, casi negro */
+  border-radius: 12px;
+  /* Una sombra sutil para despegarlo del fondo */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  border: 1px solid #d326e6;
+  color: #000000;
+  font-family: 'Arial', sans-serif; /* Usá la fuente de tu proyecto */
+}
+
+.form-container h2 {
+  text-align: center;
+  color: #b237d4; /* Dorado luxury para el título */
+  margin-bottom: 30px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.joya-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  color: #333333;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Estilo unificado para todos los inputs */
+.form-group input,
+.form-group select,
+.form-group textarea {
+  padding: 14px;
+  background-color: #ffffff;
+  border: 1px solid #333333;
+  border-radius: 8px;
+  color: #333333   ;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+/* Para que las opciones del select no se vean blancas por defecto en Windows */
+.form-group select option {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* El efecto visual cuando estás escribiendo (focus) */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: blueviolet; 
+  box-shadow: 0 0 8px rgba(138, 43, 226, 0.4);
+}
+
+.form-buttons {
+  display: flex;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+/* Botón principal */
+.btn-save {
+  flex: 1;
+  padding: 14px;
+  background-color: blueviolet; 
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-save:hover {
+  background-color: #7122b8; /* Un violeta más oscuro */
+  transform: translateY(-2px); /* Se levanta un poquito al pasar el mouse */
+}
+
+/* Botón secundario */
+.btn-cancel {
+  flex: 1;
+  padding: 14px;
+  background-color: transparent;
+  color: #d4af37; /* Texto dorado */
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: rgba(212, 175, 55, 0.1); /* Brillo dorado de fondo */
+}

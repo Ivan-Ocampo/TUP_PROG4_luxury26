@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ProductCard from '../../components/productCard/ProductCard';
 import { obtenerProductos } from '../../services/productoService';
 import SkeletonCard from '../../components/skeleton/SkeletonCard';
+import { Link } from 'react-router-dom';
 
 import './Catalogo.css';
+import Button from '../../components/button/Button';
 
 const Catalogo = () => {
   const [productos, setProductos] = useState([]);
@@ -31,9 +33,13 @@ const Catalogo = () => {
 
   return (
     <div className="catalogo-container">
+      {/* Botón para agregar producto (solo para admin) */}
+      <Link to ="/admin/altaProducto">
+      <Button texto="Agregar producto" style={{position: 'absolute', top: '20px', left: '20px'}} color="lila" size="grande" efecto="redondeado" />
+      </Link>
       <h1>Catálogo de Joyas</h1>
       
-      {/* 3. La misma grilla que usa el catálogo real */}
+      {/* La misma grilla que usa el catálogo real */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
         
         

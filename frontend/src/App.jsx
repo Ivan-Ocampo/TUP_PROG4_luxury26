@@ -4,10 +4,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 //Importarmos los componentes globales (Navbar y Footer)
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/footer/Footer';
+import Button from './components/button/Button';
 
 // Importamos las páginas desde su nueva ubicación
 import Catalogo from './pages/catalogo/Catalogo';
 import DetalleProducto from './pages/detalleProducto/DetalleProducto';
+import AltaProducto from './pages/altaProducto/AltaProducto';
 
 function App() {
  const enlacesDeNavegacion = [
@@ -30,6 +32,8 @@ function App() {
           
           {/* Ruta para el detalle del producto (la usaremos más adelante) */}
           <Route path="/producto/:id" element={<DetalleProducto />} />
+          {/* Ruta para dar de alta un nuevo producto (solo para admin) */}
+          <Route path="/admin/altaProducto" element={<AltaProducto />} />
         </Routes>
 
         <Footer year={new Date().getFullYear()} companyName="Luxury" />

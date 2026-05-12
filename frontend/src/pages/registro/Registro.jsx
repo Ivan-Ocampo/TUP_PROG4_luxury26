@@ -66,10 +66,10 @@ const Registro = () => {
           <input
             type="email"
             name="email"
+            placeholder="ejemplo@dominio.com"
             value={formData.email}
             onChange={handleChange}
-            placeholder="ejemplo@correo.com"
-            required
+              required
           />
         </div>
 

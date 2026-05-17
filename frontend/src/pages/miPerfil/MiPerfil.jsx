@@ -46,7 +46,7 @@ const MiPerfil = () => {
       return;
     }
 
-    // 2. Validación frontend: Si quiere cambiar clave, DEBE poner la actual
+    // Validación frontend: Si quiere cambiar clave, DEBE poner la actual
     if (formData.nuevaPassword && !formData.passwordActual) {
       setMensaje({ tipo: 'error', texto: 'Debes ingresar tu contraseña actual para cambiarla.' });
       return;
@@ -60,6 +60,7 @@ const MiPerfil = () => {
       // Limpiamos los campos de contraseña por seguridad
       setFormData(prev => ({ ...prev, passwordActual: '', nuevaPassword: '', repetirPassword: '' }));
     } catch (error) {
+      console.error('Error al actualizar perfil', error);
       setMensaje({ tipo: 'error', texto: 'Hubo un error al actualizar el perfil.' });
     }
   };
@@ -134,7 +135,7 @@ const MiPerfil = () => {
           </div>
 
           <Button type="submit" texto="Guardar cambios" color="lila" size="grande" efecto="redondeado" />
-          <Button type="submit" texto="Eliminar cuenta" color="rojo" size="grande" efecto="redondeado" />
+          <Button type="button" texto="Eliminar cuenta" color="rojo" size="grande" efecto="redondeado" />
         
         </form>
       </div>

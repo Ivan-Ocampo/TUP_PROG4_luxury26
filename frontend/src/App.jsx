@@ -12,6 +12,8 @@ import AltaProducto from './pages/altaProducto/AltaProducto';
 import Login from './pages/login/Login';
 import Registro from './pages/registro/Registro';
 import Usuarios from './pages/usuarios/Usuarios';
+import EditarProducto from './pages/editarProducto/EditarProducto';
+import MiPerfil from './pages/miPerfil/MiPerfil';
 
 function App() {
   return (
@@ -26,22 +28,20 @@ function App() {
           <Route path="/producto/:id" element={<DetalleProducto />} />
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
+          <Route path="/mi-Perfil" element={<MiPerfil />} />
 
+          //Rutas protegidas para admin
           <Route 
             path="/admin/altaProducto" 
-            element={
-              <AdminRoute>
-                <AltaProducto />
-              </AdminRoute>
-            } 
+            element={<AdminRoute><AltaProducto /></AdminRoute>} 
           />
           <Route 
             path="/admin/usuarios" 
-            element={
-              <AdminRoute>
-                <Usuarios />
-              </AdminRoute>
-            } 
+            element={<AdminRoute><Usuarios /></AdminRoute>} 
+          />
+          <Route 
+            path="/admin/editarProducto/:id" 
+            element={<AdminRoute><EditarProducto /></AdminRoute>} 
           />
         </Routes>
 

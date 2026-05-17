@@ -1,5 +1,6 @@
 const { Usuario } = require('../models/usuario');
 const {Carrito} = require('../models/carrito');
+const bcrypt = require('bcrypt');
 
 // Alta
 const crearUsuario = async (req, res) => {
@@ -28,7 +29,6 @@ const crearUsuario = async (req, res) => {
   }
 };
 
-// Consultas
 const obtenerUsuarios = async (req, res) => {
   try {
     const usuarios = await Usuario.find(); // El admin vería todos
@@ -68,4 +68,68 @@ const bajaLogicaUsuario = async (req, res) => {
   }
 };
 
-module.exports = { crearUsuario, obtenerUsuarios, obtenerUsuarioPorId, modificarUsuario, bajaLogicaUsuario };
+//OBTENER PERFIL DEL USUARIO LOGUEADO
+const obtenerPerfil = async (req, res) => {
+  try {
+    // req.usuario.id viene del token de validación (tu middleware de auth)
+    const usuario = await Usuario.findById(req.usuario.id).select('-password'); 
+    // El .select('-password') es por seguridad, para no enviarle el hash al frontend
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    res.json(usuario);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al obtener el perfil' });
+  }
+};
+
+// ACTUALIZAR PERFIL DEL USUARIO LOGUEADO
+const actualizarPerfil = async (req, res) => {
+  try {
+    const { nombre, email, passwordActual, nuevaPassword } = req.body;
+
+    // Buscamos al usuario en la base de datos
+    const usuario = await Usuario.findById(req.usuario.id);
+
+    if (!usuario) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    //Actualizamos los datos básicos
+    usuario.nombre = nombre || usuario.nombre;
+    usuario.email = email || usuario.email;
+
+    //Si el usuario mandó una contraseña nueva, hacemos el cambio
+    if (nuevaPassword) {
+      // Verificamos que la contraseña actual que escribió sea correcta
+      const passwordCorrecta = await bcrypt.compare(passwordActual, usuario.password);
+      
+     if (!passwordCorrecta) {
+        return res.status(400).json({ mensaje: 'La contraseña actual es incorrecta' });
+      }
+
+      
+      usuario.password = nuevaPassword
+    }
+
+    // Guardamos los cambios en la base de datos
+    const usuarioActualizado = await usuario.save();
+
+    // Devolvemos los datos actualizados (sin la contraseña)
+    res.json({
+      _id: usuarioActualizado._id,
+      nombre: usuarioActualizado.nombre,
+      email: usuarioActualizado.email,
+      mensaje: 'Perfil actualizado con éxito'
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensaje: 'Error al actualizar el perfil' });
+  }
+};
+
+module.exports = { crearUsuario, obtenerUsuarios, obtenerUsuarioPorId, modificarUsuario, bajaLogicaUsuario, obtenerPerfil, actualizarPerfil };

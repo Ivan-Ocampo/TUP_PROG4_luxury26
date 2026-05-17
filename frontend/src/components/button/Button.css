@@ -4,6 +4,12 @@
   color: #ffffff;
 }
 
+.rojo{
+  background-color: rgb(255, 0, 0);
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
 .sombra {
   box-shadow: 2px 2px 8px gray;
 }

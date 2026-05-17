@@ -17,3 +17,26 @@
     margin-bottom: 50px;
     
 }
+
+/* --- Estilos para la etiqueta roja "INACTIVO" --- */
+.etiqueta-inactivo {
+  position: absolute;
+  top: 10px; /* Igual que el lapicito pero del otro lado */
+  left: 10px;
+  background-color: #f44336; /* Un rojo fuerte de alerta */
+  color: #ffffff;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  z-index: 10; /* Asegura que quede arriba de la foto */
+}
+
+/* --- Efecto para "apagar" la imagen del producto dado de baja --- */
+.imagen-apagada {
+  opacity: 0.6; /* Le bajamos la opacidad (menos brillo) */
+  filter: grayscale(80%); /* Opcional: la ponemos casi en blanco y negro para que se note más */
+  transition: opacity 0.3s ease; /* Para que si tildás/destildás el checkbox haga un efecto suave */
+}

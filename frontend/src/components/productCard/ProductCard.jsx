@@ -13,6 +13,7 @@ const ProductCard = ({
   categoriaId,
   onAddToCart,
   esAdmin,
+  estaActivo
 }) => {
   return (
     <div className="product-card">
@@ -26,6 +27,9 @@ const ProductCard = ({
           <FaEdit />
         </Link>
       )}
+      {esAdmin && !estaActivo && (
+        <div className="etiqueta-inactivo">INACTIVO</div>
+      )}
 
       <img
         src={
@@ -33,7 +37,7 @@ const ProductCard = ({
           "https://img.freepik.com/vector-premium/vector-icono-imagen-predeterminado-pagina-imagen-faltante-diseno-sitio-web-o-aplicacion-movil-no-hay-foto-disponible_87543-11093.jpg"
         }
         alt={`Imagen de ${nombre}`}
-        className="product-image"
+        className={!estaActivo ? 'imagen-apagada' : ''}
       />
       <div className="product-info">
         <h3 className="product-title">{nombre}</h3>

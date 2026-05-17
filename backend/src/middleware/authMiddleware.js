@@ -11,7 +11,7 @@ const authMiddleware = (req, res, next) => {
     const token = authHeader.split(' ')[1];
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.usuario = { id: decoded.id, rol: decoded.rol };
+        req.usuario = { id: decoded.id || decoded._id, rol: decoded.rol };
         next();
     } catch (error) {
         return res.status(401).json({ mensaje: 'Token inválido' });

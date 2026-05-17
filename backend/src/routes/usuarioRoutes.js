@@ -10,6 +10,12 @@ router.post('/', usuarioController.crearUsuario);
 // Obtener todos los usuarios (solo para administradores)
 router.get('/',authMiddleware, adminMiddleware , usuarioController.obtenerUsuarios);
 
+// Obtener perfil del usuario logueado
+router.get('/perfil', authMiddleware, usuarioController.obtenerPerfil);
+
+// Actualizar datos del usuario logueado
+router.put('/perfil', authMiddleware, usuarioController.actualizarPerfil);
+
 // Obtener un usuario por su ID
 router.get('/:id', usuarioController.obtenerUsuarioPorId);
 
@@ -18,5 +24,7 @@ router.put('/:id', usuarioController.modificarUsuario);
 
 // Baja lógica del usuario
 router.patch('/:id/baja', usuarioController.bajaLogicaUsuario);
+
+
 
 module.exports = router;

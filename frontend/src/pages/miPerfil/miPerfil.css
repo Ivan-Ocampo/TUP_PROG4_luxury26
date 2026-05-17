@@ -1,0 +1,104 @@
+.perfil-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+  min-height: 80vh;
+}
+
+.perfil-card {
+  background-color: #ffffff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 500px;
+}
+
+.perfil-card h2 {
+  margin-top: 0;
+  margin-bottom: 25px;
+  color: #333;
+  text-align: center;
+}
+
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.perfil-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.perfil-form label {
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.perfil-form input {
+  padding: 12px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #333;
+  transition: border-color 0.2s;
+}
+
+.perfil-form input:focus {
+  outline: none;
+  border-color: #5a189a; /* Tu violeta */
+  box-shadow: 0 0 0 3px rgba(90, 24, 154, 0.1);
+}
+
+.perfil-form input::placeholder {
+  color: #999;
+  font-size: 0.95rem;
+}
+
+.divisor {
+  height: 1px;
+  background-color: #eee;
+  margin: 10px 0;
+}
+
+.btn-guardar-perfil {
+  background-color: #5a189a; /* Tu violeta */
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  margin-top: 10px;
+}
+
+.btn-guardar-perfil:hover {
+  background-color: #431075;
+}
+
+/* --- Mensajes de alerta --- */
+.mensaje-alerta {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.mensaje-alerta.error {
+  background-color: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.mensaje-alerta.exito {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}

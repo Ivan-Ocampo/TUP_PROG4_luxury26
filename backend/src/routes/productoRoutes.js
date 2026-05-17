@@ -7,7 +7,7 @@ const { authMiddleware, adminMiddleware } = require('../middleware/authMiddlewar
 router.post('/', authMiddleware, adminMiddleware, productoController.crearProducto);
 
 // Obtener el catálogo de productos activos
-router.get('/', productoController.obtenerProductosActivos);
+router.get('/', productoController.obtenerProductos);
 
 // Obtener el detalle de un producto específico
 router.get('/:id', productoController.obtenerProductoPorId);

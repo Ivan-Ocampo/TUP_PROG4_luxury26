@@ -129,8 +129,8 @@
   width: 100%;
   text-align: left;
   cursor: pointer;
-  box-sizing: border-box; /* 3. MAGIA: Hace que el ancho 100% incluya el padding */
-  white-space: nowrap; /* 4. Evita que textos largos se partan en dos líneas */
+  box-sizing: border-box; 
+  white-space: nowrap; 
 }
 
 .nav-links .dropdown-menu a:hover, 

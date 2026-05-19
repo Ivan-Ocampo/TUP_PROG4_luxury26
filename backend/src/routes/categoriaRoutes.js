@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const categoriaController = require('../controllers/categoriaController');
+const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
 
 // Crear una nueva categoría
-router.post('/', categoriaController.crearCategoria);
+router.post('/', authMiddleware, adminMiddleware, categoriaController.crearCategoria);
 
 // Obtener todas las categorías activas
 router.get('/', categoriaController.obtenerCategorias);
@@ -12,6 +13,6 @@ router.get('/', categoriaController.obtenerCategorias);
 router.put('/:id', categoriaController.modificarCategoria);
 
 // Baja lógica de una categoría
-router.patch('/:id/baja', categoriaController.bajaLogicaCategoria);
+router.patch('/:id/baja', authMiddleware, adminMiddleware, categoriaController.bajaLogicaCategoria);
 
 module.exports = router;

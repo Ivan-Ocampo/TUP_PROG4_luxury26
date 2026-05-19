@@ -5,3 +5,12 @@ export const obtenerCategorias = async () => {
   const respuesta = await axios.get(API_URL);
   return respuesta.data;
 }
+
+export const crearCategoria = async (categoriaData, token) => {
+  const respuesta = await axios.post(API_URL, categoriaData, {
+    headers: {
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  return respuesta.data;
+}

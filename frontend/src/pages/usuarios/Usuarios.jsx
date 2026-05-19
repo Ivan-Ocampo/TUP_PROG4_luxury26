@@ -139,7 +139,7 @@ const Usuarios = () => {
                 </span>
               </td>
               
-              {/* --- BOTONES DE LÁPIZ Y TACHITO --- */}
+              {/* BOTONES DE LÁPIZ Y TACHITO */}
               <td style={{ padding: '10px', display: 'flex', justifyContent: 'center', gap: '15px' }}>
                 <button 
                   type="button" 
@@ -164,7 +164,7 @@ const Usuarios = () => {
         </tbody>
       </table>
 
-      {/* --- MODAL FLOTANTE DE EDICIÓN --- */}
+      {/*  MODAL FLOTANTE DE EDICIÓN */}
       {modalAbierto && (
         <div style={{
           position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
@@ -185,17 +185,17 @@ const Usuarios = () => {
             <form onSubmit={handleSubmit}>
               <div style={{ marginBottom: '15px', textAlign: 'left' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Nombre</label>
-                <input type="text" name="nombre" value={usuarioForm.nombre} onChange={handleChange} required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
+                <input type="text" name="nombre" value={usuarioForm.nombre} onChange={handleChange} required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '2px solid #ccc', boxSizing: 'border-box', backgroundColor: 'white', color: 'black' }} />
               </div>
 
               <div style={{ marginBottom: '15px', textAlign: 'left' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Email</label>
-                <input type="email" name="email" value={usuarioForm.email} onChange={handleChange} required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }} />
+                <input type="email" name="email" value={usuarioForm.email} onChange={handleChange} required style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '2px solid #ccc', boxSizing: 'border-box', backgroundColor: 'white', color: 'black' }} />
               </div>
 
               <div style={{ marginBottom: '15px', textAlign: 'left' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Rol</label>
-                <select name="rol" value={usuarioForm.rol} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }}>
+                <select name="rol" value={usuarioForm.rol} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '2px solid #ccc', boxSizing: 'border-box', backgroundColor: 'white', color: 'black' }}>
                   <option value="usuario">Usuario</option>
                   <option value="administrador">Administrador</option>
                 </select>
@@ -203,7 +203,7 @@ const Usuarios = () => {
 
               <div style={{ marginBottom: '15px', textAlign: 'left' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Estado de la cuenta</label>
-                <select name="activo" value={usuarioForm.activo.toString()} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid #ccc', boxSizing: 'border-box' }}>
+                <select name="activo" value={usuarioForm.activo.toString()} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '2px solid #ccc', boxSizing: 'border-box', backgroundColor: 'white', color: 'black' }}>
                   <option value="true">Activo</option>
                   <option value="false">Inactivo (Baja Lógica)</option>
                 </select>

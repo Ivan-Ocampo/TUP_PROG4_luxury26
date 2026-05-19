@@ -22,6 +22,8 @@ const EditarProducto = () => {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
 
+  
+
   //Efecto para buscar los datos del producto cuando entramos a la página
   useEffect(() => {
     const cargarDatos = async () => {

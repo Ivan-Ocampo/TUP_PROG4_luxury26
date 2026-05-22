@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-// 1. Importamos tu nuevo servicio
 import { crearUsuario } from '../../services/usuarioService'; 
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
@@ -12,10 +11,14 @@ const Registro = () => {
   const [formData, setFormData] = useState({
     nombre: '',
     email: '',
-    password: ''
+    password: '',
+    repetirPassword: ''
   });
   const [error, setError] = useState('');
+  
+  
   const [mostrarPassword, setMostrarPassword] = useState(false);
+  const [mostrarRepetirPassword, setMostrarRepetirPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -28,11 +31,27 @@ const Registro = () => {
     setMostrarPassword(!mostrarPassword);
   };
 
+  const toggleRepetirPassword = () => {
+    setMostrarRepetirPassword(!mostrarRepetirPassword);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Limpiamos errores previos
+
+    // VALIDACIÓN
+    if (formData.password !== formData.repetirPassword) {
+      setError('Las contraseñas no coinciden. Por favor, verificalas.');
+      return; // Cortamos la ejecución acá para que no llame al backend
+    }
+
     try {
-      // 2. Usamos la función del usuarioService
-      await crearUsuario(formData); 
+      // Separamos "repetirPassword" para enviar solo lo que el backend necesita
+      // eslint-disable-next-line no-unused-vars
+      const { repetirPassword, ...datosBackend } = formData;
+      
+      
+      await crearUsuario(datosBackend); 
       
       alert('¡Cuenta creada con éxito! Ahora podés iniciar sesión.');
       navigate('/login'); 
@@ -69,7 +88,7 @@ const Registro = () => {
             placeholder="ejemplo@dominio.com"
             value={formData.email}
             onChange={handleChange}
-              required
+            required
           />
         </div>
 
@@ -89,6 +108,26 @@ const Registro = () => {
               onClick={togglePassword}
             >
               {mostrarPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <label>Repetir Contraseña:</label>
+          <div className="password-input-container">
+            <input
+              type={mostrarRepetirPassword ? "text" : "password"}
+              name="repetirPassword"
+              value={formData.repetirPassword}
+              onChange={handleChange}
+              required
+            />
+            <button
+              type="button"
+              className="toggle-password-btn"
+              onClick={toggleRepetirPassword}
+            >
+              {mostrarRepetirPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
         </div>

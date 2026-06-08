@@ -6,7 +6,9 @@ const usuarioSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true, trim: true },
   password: { type: String, required: true },
   rol: { type: String, enum: ['cliente', 'administrador'], default: 'cliente' },
-  activo: { type: Boolean, default: true }
+  activo: { type: Boolean, default: true },
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date }
 });
 
 // ==========================================

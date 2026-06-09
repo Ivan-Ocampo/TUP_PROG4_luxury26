@@ -78,3 +78,4 @@ export const eliminarUsuarioAdmin = async (id) => {
   });
   return respuesta.data;
 };
+

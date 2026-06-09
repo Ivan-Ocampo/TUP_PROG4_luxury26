@@ -8,4 +8,14 @@ const loginUsuario = async (credenciales) => {
   return respuesta.data;
 };
 
-export { loginUsuario };
+const solicitarRestablecerContraseña = async (email) => {
+  const respuesta = await axios.post(`${API_URL}/forgot-password`, { email });
+  return respuesta.data;
+}
+
+const restablecerContraseña = async (token, password) => {
+  const respuesta = await axios.post(`${API_URL}/reset-password/${token}`, { password });
+  return respuesta.data;
+};
+
+export { loginUsuario, solicitarRestablecerContraseña, restablecerContraseña };

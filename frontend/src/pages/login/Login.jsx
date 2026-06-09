@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { loginUsuario } from '../../services/authService';
-// Importamos los íconos del ojito
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { loginUsuario } from "../../services/authService";
 
-// Reutilizamos tu CSS de CargarProducto
-import '../altaProducto/AltaProducto.css';
+// Importamos los íconos del ojito
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+// Reutilizamos CSS de CargarProducto
+import "../altaProducto/AltaProducto.css";
 
 const Login = () => {
   const navigate = useNavigate();
 
   const [credenciales, setCredenciales] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // --- ESTADO PARA CONTROLAR EL OJITO ---
   const [mostrarPassword, setMostrarPassword] = useState(false);
@@ -22,7 +23,7 @@ const Login = () => {
   const handleChange = (e) => {
     setCredenciales({
       ...credenciales,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
@@ -38,17 +39,18 @@ const Login = () => {
       const data = await loginUsuario(credenciales);
 
       // 2. ¡Atrapamos el token y lo guardamos en el LocalStorage!
-      localStorage.setItem('token', data.token);
+      localStorage.setItem("token", data.token);
 
-      alert('¡Login exitoso!');
+      alert("¡Login exitoso!");
 
       // 3. Lo llevamos a la página principal o al panel de admin
-      navigate('/');
-
+      navigate("/");
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
       // Mostramos el error exacto que manda tu backend (ej: "Contraseña incorrecta")
-      setError(error.response?.data?.mensaje || 'Hubo un error al iniciar sesión');
+      setError(
+        error.response?.data?.mensaje || "Hubo un error al iniciar sesión",
+      );
     }
   };
 
@@ -56,7 +58,18 @@ const Login = () => {
     <div className="form-container">
       <h2>Iniciar Sesión</h2>
 
-      {error && <div style={{ color: 'red', marginBottom: '15px', textAlign: 'center', fontWeight: 'bold' }}>{error}</div>}
+      {error && (
+        <div
+          style={{
+            color: "red",
+            marginBottom: "15px",
+            textAlign: "center",
+            fontWeight: "bold",
+          }}
+        >
+          {error}
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} className="joya-form">
         <div className="form-group">
@@ -93,19 +106,49 @@ const Login = () => {
         </div>
 
         <div className="form-buttons">
-          <button type="submit" className="btn-save">Ingresar</button>
-          <button type="button" onClick={() => navigate('/')} className="btn-cancel">Cancelar</button>
+          <button type="submit" className="btn-save">
+            Ingresar
+          </button>
+          <button
+            type="button"
+            onClick={() => navigate("/")}
+            className="btn-cancel"
+          >
+            Cancelar
+          </button>
         </div>
 
-
-        <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '0.95rem' }}>
+        <div
+          style={{
+            marginTop: "20px",
+            textAlign: "center",
+            fontSize: "0.95rem",
+          }}
+        >
           <span>¿No tenés cuenta? </span>
-          <Link to="/registro" style={{ color: '#5a189a', fontWeight: 'bold', textDecoration: 'underline' }}>
+          <Link
+            to="/registro"
+            style={{
+              color: "#5a189a",
+              fontWeight: "bold",
+              textDecoration: "underline",
+            }}
+          >
             Registrate
           </Link>
         </div>
-
-
+        <div style={{ marginTop: "10px", textAlign: "center" }}>
+          <Link
+            to="/forgot-password"
+            style={{
+              color: "#5a189a",
+              fontSize: "0.9rem",
+              textDecoration: "underline",
+            }}
+          >
+            ¿Olvidaste tu contraseña?
+          </Link>
+        </div>
       </form>
     </div>
   );

@@ -14,6 +14,8 @@ import Registro from './pages/registro/Registro';
 import Usuarios from './pages/usuarios/Usuarios';
 import EditarProducto from './pages/editarProducto/EditarProducto';
 import MiPerfil from './pages/miPerfil/MiPerfil';
+import ForgotPassword from './pages/forgotpassword/Forgotpassword';
+import ResetPassword from './pages/resetPassword/ResetPassword';
 
 function App() {
   return (
@@ -29,6 +31,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/registro" element={<Registro />} />
           <Route path="/mi-Perfil" element={<MiPerfil />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password/:token" element={<ResetPassword />} /> 
 
           //Rutas protegidas para admin
           <Route 

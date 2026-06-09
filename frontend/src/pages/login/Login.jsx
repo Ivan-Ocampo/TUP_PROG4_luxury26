@@ -9,20 +9,14 @@ const Login = () => {
 
   const [credenciales, setCredenciales] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
-  const [alertaStock, setAlertaStock] = useState([]);   // items eliminados por falta de stock
-  const [carritoExpirado, setCarritoExpirado] = useState(false); // carrito venció
-
-  // --- ESTADO PARA CONTROLAR EL OJITO ---
+  const [alertaStock, setAlertaStock] = useState([]);
+  const [carritoExpirado, setCarritoExpirado] = useState(false);
   const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const handleChange = (e) => {
-    setCredenciales({
-      ...credenciales,
-      [e.target.name]: e.target.value
-    });
+    setCredenciales({ ...credenciales, [e.target.name]: e.target.value });
   };
 
-  // --- FUNCIÓN PARA ALTERNAR EL OJITO ---
   const togglePassword = () => {
     setMostrarPassword(!mostrarPassword);
   };
@@ -30,13 +24,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // 1. Mandamos las credenciales al backend
       const data = await loginUsuario(credenciales);
 
       localStorage.setItem('token', data.token);
       window.dispatchEvent(new Event('authChange'));
 
-      // Si el carrito expiró o tiene items sin stock, mostramos alerta antes de navegar
       if (data.carritoExpirado) {
         setCarritoExpirado(true);
         return;
@@ -47,10 +39,8 @@ const Login = () => {
       }
 
       navigate('/');
-
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
-      // Mostramos el error exacto que manda tu backend (ej: "Contraseña incorrecta")
       setError(error.response?.data?.mensaje || 'Hubo un error al iniciar sesión');
     }
   };
@@ -97,21 +87,22 @@ const Login = () => {
           <label>Contraseña:</label>
           <div className="password-input-container">
             <input
-              // Si mostrarPassword es true, el tipo es "text". Si es false, es "password"
               type={mostrarPassword ? "text" : "password"}
               name="password"
               value={credenciales.password}
               onChange={handleChange}
               required
             />
-            <button
-              type="button"
-              className="toggle-password-btn"
-              onClick={togglePassword}
-            >
+            <button type="button" className="toggle-password-btn" onClick={togglePassword}>
               {mostrarPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
+        </div>
+
+        <div style={{ marginTop: '10px', textAlign: 'left' }}>
+          <Link to="/forgot-password" style={{ color: '#5a189a', fontSize: '0.9rem', textDecoration: 'underline' }}>
+            ¿Olvidaste tu contraseña?
+          </Link>
         </div>
 
         <div className="form-buttons">
@@ -119,15 +110,12 @@ const Login = () => {
           <button type="button" onClick={() => navigate('/')} className="btn-cancel">Cancelar</button>
         </div>
 
-
         <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '0.95rem' }}>
           <span>¿No tenés cuenta? </span>
           <Link to="/registro" style={{ color: '#5a189a', fontWeight: 'bold', textDecoration: 'underline' }}>
             Registrate
           </Link>
         </div>
-
-
       </form>
     </div>
   );

@@ -1,6 +1,9 @@
 const crypto = require("crypto");
-const {enviarMailRecuperacion} = require("../utils/mailer");
+const { enviarMailRecuperacion } = require("../utils/mailer");
 const { Usuario } = require("../models/usuario");
+const { Carrito } = require("../models/carrito");
+const { Notificacion } = require("../models/notificacion");
+const { verificarYLimpiarStock } = require("./carritoController");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -14,12 +17,11 @@ const login = async (req, res) => {
     }
 
     if (usuario.activo === false) {
-      return res
-        .status(403)
-        .json({ mensaje: "Esta cuenta ha sido desactivada. Comunicate con el administrador.",
-        });
+      return res.status(403).json({
+        mensaje: "Esta cuenta ha sido desactivada. Comunicate con el administrador.",
+      });
     }
-    
+
     const passwordValida = await bcrypt.compare(password, usuario.password);
     if (!passwordValida) {
       return res.status(401).json({ mensaje: "Contraseña incorrecta" });
@@ -28,18 +30,67 @@ const login = async (req, res) => {
     const token = jwt.sign(
       { id: usuario._id, rol: usuario.rol },
       process.env.JWT_SECRET,
-      { expiresIn: "3h" },
+      { expiresIn: "3h" }
     );
+
+    let itemsEliminados = [];
+    let carritoExpirado = false;
+    try {
+      const carrito = await Carrito.findOne({ usuarioId: usuario._id }).populate('items.productoId');
+      if (carrito) {
+        if (carrito.expiraEn && carrito.expiraEn < new Date()) {
+          carrito.items = [];
+          carrito.total = 0;
+          carrito.expiraEn = new Date(Date.now() + 15 * 60 * 1000);
+          await carrito.save();
+          carritoExpirado = true;
+
+          await Notificacion.create({
+            usuarioId: usuario._id,
+            tipo: 'carrito_expirado',
+            mensaje: 'Tu carrito expiró. Los productos que habías seleccionado fueron eliminados porque no confirmaste la compra a tiempo.'
+          });
+
+        } else if (carrito.items.length > 0) {
+          itemsEliminados = await verificarYLimpiarStock(carrito);
+
+          if (itemsEliminados.length > 0) {
+            await Notificacion.create({
+              usuarioId: usuario._id,
+              tipo: 'stock_eliminado',
+              mensaje: `Se eliminaron del carrito los siguientes productos por falta de stock: ${itemsEliminados.join(', ')}.`
+            });
+          }
+
+          const hoy = new Date();
+          hoy.setHours(0, 0, 0, 0);
+          const yaNotificado = await Notificacion.findOne({
+            usuarioId: usuario._id,
+            tipo: 'carrito_pendiente',
+            fechaCreacion: { $gte: hoy }
+          });
+          if (!yaNotificado) {
+            await Notificacion.create({
+              usuarioId: usuario._id,
+              tipo: 'carrito_pendiente',
+              mensaje: 'Tenés productos en tu carrito sin finalizar la compra.'
+            });
+          }
+        }
+      }
+    } catch (e) {
+      // No interrumpir el login si falla la verificación del carrito
+    }
 
     res.status(200).json({
       mensaje: "¡Login exitoso!",
-      token: token,
+      token,
+      itemsEliminados,
+      carritoExpirado
     });
   } catch (error) {
     console.error("Error en el login:", error);
-    res
-      .status(500)
-      .json({ mensaje: "Error interno del servidor", detalle: error.message });
+    res.status(500).json({ mensaje: "Error interno del servidor", detalle: error.message });
   }
 };
 
@@ -53,17 +104,13 @@ const forgotPassword = async (req, res) => {
     }
 
     const resetToken = crypto.randomBytes(32).toString("hex");
-
     const hashedToken = crypto.createHash("sha256").update(resetToken).digest("hex");
 
     usuario.resetPasswordToken = hashedToken;
-
     usuario.resetPasswordExpires = Date.now() + 900000; // 15 minutos
-
     usuario.save();
 
     const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
-
     await enviarMailRecuperacion(usuario.email, resetUrl);
 
     res.status(200).json({ mensaje: "Si el email existe, se enviará un mensaje con instrucciones para recuperar la contraseña." });
@@ -78,7 +125,7 @@ const resetPassword = async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
-    if(!password || password.length < 6) {
+    if (!password || password.length < 6) {
       return res.status(400).json({ mensaje: "La contraseña debe tener al menos 6 caracteres" });
     }
 
@@ -96,7 +143,6 @@ const resetPassword = async (req, res) => {
     usuario.password = password;
     usuario.resetPasswordToken = undefined;
     usuario.resetPasswordExpires = undefined;
-
     await usuario.save();
 
     res.status(200).json({ mensaje: "Contraseña restablecida correctamente" });

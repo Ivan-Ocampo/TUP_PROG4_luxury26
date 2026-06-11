@@ -1,0 +1,101 @@
+.cantidad-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.cantidad-modal-box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  width: 90%;
+  max-width: 360px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+.cantidad-modal-titulo {
+  margin: 0 0 10px;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.cantidad-modal-stock {
+  color: #000000;
+  margin-bottom: 20px;
+}
+
+.cantidad-modal-sinstock {
+  color: #c0392b;
+  font-weight: bold;
+  margin: 20px 0;
+}
+
+.cantidad-modal-selector {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.cantidad-modal-selector button {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 8px;
+  background: #61065b;
+  color: #fff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.cantidad-modal-selector input {
+  width: 70px;
+  text-align: center;
+  font-size: 1.05 rem;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+  font-weight: bold;
+}
+
+.cantidad-modal-selector input::-webkit-outer-spin-button,
+.cantidad-modal-selector input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.cantidad-modal-selector input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.cantidad-modal-acciones {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.cantidad-modal-confirmar,
+.cantidad-modal-cancelar {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.cantidad-modal-confirmar {
+  background: #61065b;
+  color: #fff;
+}
+
+.cantidad-modal-cancelar {
+  background: #eee;
+  color: #333;
+}

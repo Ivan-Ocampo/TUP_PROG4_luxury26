@@ -1,4 +1,3 @@
-/* --- Fondo general (si ya lo tenés en tu index.css, podés borrar esto) --- */
 body {
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -12,53 +11,51 @@ body {
   margin: 0 auto;
 }
 
-/* --- La tarjeta blanca que envuelve la imagen y la info --- */
 .detalle-layout {
   display: flex;
   flex-wrap: wrap;
   background: #ffffff; /* Fondo blanco de la tarjeta */
   border-radius: 12px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Sombra elegante */
-  overflow: hidden; /* Para que la imagen no se salga de las esquinas redondeadas */
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
-/* --- Columna Izquierda: Imagen --- */
 .detalle-imagen-container {
-  flex: 1 1 400px; /* Toma la mitad del espacio */
+  flex: 1 1 400px;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8fafc; /* Un gris muuuy clarito por si la imagen es transparente */
+  background-color: #f8fafc;
 }
 
 .detalle-imagen {
   width: 100%;
   height: 450px;
-  object-fit: cover; /* MAGIA: Evita que se estire feo */
+  object-fit: cover;
 }
 
 /* --- Columna Derecha: Información --- */
 .detalle-info {
-  flex: 1 1 400px; /* Toma la otra mitad del espacio */
+  flex: 1 1 400px;
   padding: 40px;
   display: flex;
   flex-direction: column;
-  gap: 20px; /* Espacio entre cada elemento de texto */
+  gap: 20px;
 }
 
 .detalle-titulo {
   margin: 0;
   font-size: 2.2rem;
-  color: #333333; /* Texto oscuro para que se lea sobre el fondo blanco */
+  color: #333333;
 }
 
 .detalle-categoria {
   display: inline-block;
-  align-self: center; /* <-- Magia para centrarlo junto con el resto */
+  align-self: center;
   padding: 8px 16px;
-  background: #ffffff; 
+  background: #ffffff;
   color: #000000;
-  border-radius: 8px; /* <-- Bordes más cuadrados con un redondeo sutil, igual que tus botones */
+  border-radius: 8px;
   font-size: 1rem;
   font-weight: 500;
 }
@@ -67,18 +64,18 @@ body {
   margin: 0;
   font-size: 2rem;
   font-weight: 700;
-  color: #333333;
+  color: #000000;
 }
 
 .detalle-descripcion {
-  color: #555555;
+  color: #000000;
   line-height: 1.6;
   font-size: 1.05rem;
 }
 
 .detalle-descripcion h3 {
   margin-bottom: 10px;
-  color: #333333;
+  color: #000000;
 }
 
 /* --- Contenedor de botones --- */
@@ -90,7 +87,6 @@ body {
   flex-wrap: wrap;
 }
 
-/* Le sacamos el subrayado a los Links de React Router */
 .detalle-acciones a {
   text-decoration: none;
 }
@@ -98,22 +94,44 @@ body {
 /* --- Responsive (Para celulares) --- */
 @media (max-width: 768px) {
   .detalle-layout {
-    flex-direction: column; /* Apila la foto arriba y el texto abajo */
+    flex-direction: column;
   }
   
   .detalle-imagen {
-    height: 350px; /* Achica un poco la foto en celu */
+    height: 350px;
   }
   
   .detalle-info {
-    padding: 25px; /* Menos relleno en celu */
+    padding: 25px;
   }
   
   .detalle-acciones {
-    flex-direction: column; /* Apila los botones */
+    flex-direction: column;
   }
   
   .btn-carrito, .btn-volver {
     width: 100%;
   }
+}
+/* --- Mensajes de feedback al agregar al carrito --- */
+.detalle-exito {
+  background: #2e7d32;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.detalle-error {
+  background: #c0392b;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.btn-carrito {
+  cursor: pointer;
 }

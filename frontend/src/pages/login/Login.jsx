@@ -1,33 +1,22 @@
-import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { loginUsuario } from "../../services/authService";
-
-// Importamos los íconos del ojito
-import { FaEye, FaEyeSlash } from "react-icons/fa";
-
-// Reutilizamos CSS de CargarProducto
-import "../altaProducto/AltaProducto.css";
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { loginUsuario } from '../../services/authService';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import '../altaProducto/AltaProducto.css';
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [credenciales, setCredenciales] = useState({
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
-
-  // --- ESTADO PARA CONTROLAR EL OJITO ---
+  const [credenciales, setCredenciales] = useState({ email: '', password: '' });
+  const [error, setError] = useState('');
+  const [alertaStock, setAlertaStock] = useState([]);
+  const [carritoExpirado, setCarritoExpirado] = useState(false);
   const [mostrarPassword, setMostrarPassword] = useState(false);
 
   const handleChange = (e) => {
-    setCredenciales({
-      ...credenciales,
-      [e.target.name]: e.target.value,
-    });
+    setCredenciales({ ...credenciales, [e.target.name]: e.target.value });
   };
 
-  // --- FUNCIÓN PARA ALTERNAR EL OJITO ---
   const togglePassword = () => {
     setMostrarPassword(!mostrarPassword);
   };
@@ -35,22 +24,24 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // 1. Mandamos las credenciales al backend
       const data = await loginUsuario(credenciales);
 
-      // 2. ¡Atrapamos el token y lo guardamos en el LocalStorage!
-      localStorage.setItem("token", data.token);
+      localStorage.setItem('token', data.token);
+      window.dispatchEvent(new Event('authChange'));
 
-      alert("¡Login exitoso!");
+      if (data.carritoExpirado) {
+        setCarritoExpirado(true);
+        return;
+      }
+      if (data.itemsEliminados && data.itemsEliminados.length > 0) {
+        setAlertaStock(data.itemsEliminados);
+        return;
+      }
 
-      // 3. Lo llevamos a la página principal o al panel de admin
-      navigate("/");
+      navigate('/');
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
-      // Mostramos el error exacto que manda tu backend (ej: "Contraseña incorrecta")
-      setError(
-        error.response?.data?.mensaje || "Hubo un error al iniciar sesión",
-      );
+      setError(error.response?.data?.mensaje || 'Hubo un error al iniciar sesión');
     }
   };
 
@@ -58,16 +49,24 @@ const Login = () => {
     <div className="form-container">
       <h2>Iniciar Sesión</h2>
 
-      {error && (
-        <div
-          style={{
-            color: "red",
-            marginBottom: "15px",
-            textAlign: "center",
-            fontWeight: "bold",
-          }}
-        >
-          {error}
+      {error && <div style={{ color: 'red', marginBottom: '15px', textAlign: 'center', fontWeight: 'bold' }}>{error}</div>}
+
+      {carritoExpirado && (
+        <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '8px', padding: '12px 16px', marginBottom: '15px', color: '#856404' }}>
+          <strong>Tu carrito expiró.</strong> Los productos que habías seleccionado fueron eliminados porque no se confirmó la compra a tiempo.
+          <div style={{ marginTop: '10px' }}>
+            <button className="btn-save" onClick={() => navigate('/')}>Entendido, ir al catálogo</button>
+          </div>
+        </div>
+      )}
+
+      {alertaStock.length > 0 && (
+        <div style={{ background: '#fff3cd', border: '1px solid #ffc107', borderRadius: '8px', padding: '12px 16px', marginBottom: '15px', color: '#856404' }}>
+          <strong>Productos eliminados de tu carrito por falta de stock:</strong>{' '}
+          {alertaStock.join(', ')}
+          <div style={{ marginTop: '10px' }}>
+            <button className="btn-save" onClick={() => navigate('/')}>Entendido, ir al inicio</button>
+          </div>
         </div>
       )}
 
@@ -88,68 +87,35 @@ const Login = () => {
           <label>Contraseña:</label>
           <div className="password-input-container">
             <input
-              // Si mostrarPassword es true, el tipo es "text". Si es false, es "password"
               type={mostrarPassword ? "text" : "password"}
               name="password"
               value={credenciales.password}
               onChange={handleChange}
               required
             />
-            <button
-              type="button"
-              className="toggle-password-btn"
-              onClick={togglePassword}
-            >
+            <button type="button" className="toggle-password-btn" onClick={togglePassword}>
               {mostrarPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
         </div>
-<div style={{ marginTop: "10px", textAlign: "left" }}>
-          <Link
-            to="/forgot-password"
-            style={{
-              color: "#5a189a",
-              fontSize: "0.9rem",
-              textDecoration: "underline",
-            }}
-          >
+
+        <div style={{ marginTop: '10px', textAlign: 'left' }}>
+          <Link to="/forgot-password" style={{ color: '#5a189a', fontSize: '0.9rem', textDecoration: 'underline' }}>
             ¿Olvidaste tu contraseña?
           </Link>
         </div>
-        
+
         <div className="form-buttons">
-          <button type="submit" className="btn-save">
-            Ingresar
-          </button>
-          <button
-            type="button"
-            onClick={() => navigate("/")}
-            className="btn-cancel"
-          >
-            Cancelar
-          </button>
+          <button type="submit" className="btn-save">Ingresar</button>
+          <button type="button" onClick={() => navigate('/')} className="btn-cancel">Cancelar</button>
         </div>
 
-        <div
-          style={{
-            marginTop: "20px",
-            textAlign: "center",
-            fontSize: "0.95rem",
-          }}
-        >
+        <div style={{ marginTop: '20px', textAlign: 'center', fontSize: '0.95rem' }}>
           <span>¿No tenés cuenta? </span>
-          <Link
-            to="/registro"
-            style={{
-              color: "#5a189a",
-              fontWeight: "bold",
-              textDecoration: "underline",
-            }}
-          >
+          <Link to="/registro" style={{ color: '#5a189a', fontWeight: 'bold', textDecoration: 'underline' }}>
             Registrate
           </Link>
         </div>
-        
       </form>
     </div>
   );

@@ -100,43 +100,43 @@ const obtenerPerfil = async (req, res) => {
 // ACTUALIZAR PERFIL DEL USUARIO LOGUEADO
 const actualizarPerfil = async (req, res) => {
   try {
-    const { nombre, email, passwordActual, nuevaPassword } = req.body;
+    const {
+      nombre, apellido, email, dni, telefono,
+      direccionFacturacion, direccionEntrega,
+      passwordActual, nuevaPassword
+    } = req.body;
 
-    // Buscamos al usuario en la base de datos
     const usuario = await Usuario.findById(req.usuario.id);
+    if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
 
-    if (!usuario) {
-      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
-    }
+    if (nombre)    usuario.nombre    = nombre;
+    if (apellido)  usuario.apellido  = apellido;
+    if (email)     usuario.email     = email;
+    if (dni)       usuario.dni       = dni;
+    if (telefono !== undefined) usuario.telefono = telefono;
+    if (direccionFacturacion) usuario.direccionFacturacion = direccionFacturacion;
+    if (direccionEntrega)     usuario.direccionEntrega     = direccionEntrega;
 
-    //Actualizamos los datos básicos
-    usuario.nombre = nombre || usuario.nombre;
-    usuario.email = email || usuario.email;
-
-    //Si el usuario mandó una contraseña nueva, hacemos el cambio
     if (nuevaPassword) {
-      // Verificamos que la contraseña actual que escribió sea correcta
       const passwordCorrecta = await bcrypt.compare(passwordActual, usuario.password);
-      
-     if (!passwordCorrecta) {
+      if (!passwordCorrecta) {
         return res.status(400).json({ mensaje: 'La contraseña actual es incorrecta' });
       }
-
-      
-      usuario.password = nuevaPassword
+      usuario.password = nuevaPassword;
     }
 
-    // Guardamos los cambios en la base de datos
     const usuarioActualizado = await usuario.save();
 
-    // Devolvemos los datos actualizados (sin la contraseña)
     res.json({
-      _id: usuarioActualizado._id,
-      nombre: usuarioActualizado.nombre,
-      email: usuarioActualizado.email,
+      _id:                  usuarioActualizado._id,
+      nombre:               usuarioActualizado.nombre,
+      apellido:             usuarioActualizado.apellido,
+      email:                usuarioActualizado.email,
+      dni:                  usuarioActualizado.dni,
+      direccionFacturacion: usuarioActualizado.direccionFacturacion,
+      direccionEntrega:     usuarioActualizado.direccionEntrega,
       mensaje: 'Perfil actualizado con éxito'
     });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ mensaje: 'Error al actualizar el perfil' });

@@ -10,6 +10,7 @@ const productoRoutes = require('./routes/productoRoutes');
 const carritoRoutes = require('./routes/carritoRoutes');
 const ordenCompraRoutes = require('./routes/ordenCompraRoutes');
 const authRoutes = require('./routes/authRoutes');
+const notificacionRoutes = require('./routes/notificacionRoutes');
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use('/api/productos', productoRoutes);
 app.use('/api/carrito', carritoRoutes);
 app.use('/api/ordenes', ordenCompraRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/notificaciones', notificacionRoutes);
 
 
 module.exports = app;

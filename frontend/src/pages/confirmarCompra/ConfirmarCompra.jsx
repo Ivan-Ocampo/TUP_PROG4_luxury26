@@ -4,6 +4,7 @@ import { useCart } from '../../context/CartContext';
 import { obtenerPerfil } from '../../services/usuarioService';
 import { generarOrdenApi } from '../../services/ordenCompraService';
 import { getUserIdFromToken } from '../../utils/auth';
+import { PROVINCIAS } from '../../utils/argentina';
 import './ConfirmarCompra.css';
 
 const METODOS = [
@@ -21,10 +22,12 @@ const ConfirmarCompra = () => {
   const usuarioId = getUserIdFromToken();
 
   // ── Datos del formulario ─────────────────────────────────────────────────
+  const dirVacia = () => ({ pais: 'Argentina', provincia: '', ciudad: '', calle: '', nro: '', piso: '', depto: '', comentario: '' });
+
   const [form, setForm] = useState({
-    apellido: '', nombre: '', email: '', dni: '',
-    facturacion: { calle: '', nro: '', piso: '', depto: '' },
-    entrega:     { calle: '', nro: '', piso: '', depto: '' },
+    apellido: '', nombre: '', email: '', dni: '', telefono: '',
+    facturacion: dirVacia(),
+    entrega:     dirVacia(),
   });
   const [entregaIgual, setEntregaIgual] = useState(true); // checkbox "misma que facturación"
 
@@ -42,24 +45,25 @@ const ConfirmarCompra = () => {
   useEffect(() => {
     obtenerPerfil()
       .then(usuario => {
+        const mapDir = (dir) => ({
+          pais:       dir?.pais       || 'Argentina',
+          provincia:  dir?.provincia  || '',
+          ciudad:     dir?.ciudad     || '',
+          calle:      dir?.calle      || '',
+          nro:        dir?.nro        || '',
+          piso:       dir?.piso       || '',
+          depto:      dir?.depto      || '',
+          comentario: dir?.comentario || '',
+        });
         setForm(prev => ({
           ...prev,
           apellido: usuario.apellido || '',
           nombre:   usuario.nombre   || '',
           email:    usuario.email    || '',
           dni:      usuario.dni      || '',
-          facturacion: {
-            calle: usuario.direccionFacturacion?.calle || '',
-            nro:   usuario.direccionFacturacion?.nro   || '',
-            piso:  usuario.direccionFacturacion?.piso  || '',
-            depto: usuario.direccionFacturacion?.depto || '',
-          },
-          entrega: {
-            calle: usuario.direccionEntrega?.calle || '',
-            nro:   usuario.direccionEntrega?.nro   || '',
-            piso:  usuario.direccionEntrega?.piso  || '',
-            depto: usuario.direccionEntrega?.depto || '',
-          },
+          telefono: usuario.telefono || '',
+          facturacion: mapDir(usuario.direccionFacturacion),
+          entrega:     mapDir(usuario.direccionEntrega),
         }));
       })
       .catch(() => {}); // Si falla, el usuario completa manualmente
@@ -113,11 +117,11 @@ const ConfirmarCompra = () => {
     if (!form.apellido || !form.nombre || !form.email || !form.dni) {
       return setError('Completá los campos obligatorios de facturación.');
     }
-    if (!form.facturacion.calle || !form.facturacion.nro) {
-      return setError('La dirección de facturación requiere calle y número.');
+    if (!form.facturacion.provincia || !form.facturacion.ciudad || !form.facturacion.calle || !form.facturacion.nro) {
+      return setError('La dirección de facturación requiere provincia, ciudad, calle y número.');
     }
-    if (!entregaIgual && (!form.entrega.calle || !form.entrega.nro)) {
-      return setError('La dirección de entrega requiere calle y número.');
+    if (!entregaIgual && (!form.entrega.provincia || !form.entrega.ciudad || !form.entrega.calle || !form.entrega.nro)) {
+      return setError('La dirección de entrega requiere provincia, ciudad, calle y número.');
     }
 
     // Construimos el array de pagos para enviar al backend
@@ -139,10 +143,11 @@ const ConfirmarCompra = () => {
     }));
 
     const datosFacturacion = {
-      apellido: form.apellido,
-      nombre:   form.nombre,
-      email:    form.email,
-      dni:      form.dni,
+      apellido:  form.apellido,
+      nombre:    form.nombre,
+      email:     form.email,
+      dni:       form.dni,
+      telefono:  form.telefono,
       direccionFacturacion: form.facturacion,
       direccionEntrega:     entregaIgual ? form.facturacion : form.entrega,
     };
@@ -191,6 +196,10 @@ const ConfirmarCompra = () => {
             <div className="checkout-campo">
               <label>DNI *</label>
               <input name="dni" value={form.dni} onChange={handleField} required />
+            </div>
+            <div className="checkout-campo">
+              <label>Teléfono</label>
+              <input name="telefono" value={form.telefono} onChange={handleField} placeholder="Ej: 011 1234-5678" />
             </div>
           </div>
         </section>
@@ -281,6 +290,27 @@ const ConfirmarCompra = () => {
 // ── Sub-componente: formulario de dirección ──────────────────────────────────
 const DireccionForm = ({ datos, onChange }) => (
   <div className="checkout-grid4">
+    <div className="checkout-campo">
+      <label>País</label>
+      <input value={datos.pais} readOnly style={{ background: '#f5f5f5', color: '#888' }} />
+    </div>
+    <div className="checkout-campo">
+      <label>Provincia *</label>
+      <input
+        list="lista-provincias-checkout"
+        value={datos.provincia}
+        onChange={e => onChange('provincia', e.target.value)}
+        placeholder="Escribí para filtrar..."
+        required
+      />
+      <datalist id="lista-provincias-checkout">
+        {PROVINCIAS.map(p => <option key={p} value={p} />)}
+      </datalist>
+    </div>
+    <div className="checkout-campo checkout-campo--calle">
+      <label>Ciudad *</label>
+      <input value={datos.ciudad} onChange={e => onChange('ciudad', e.target.value)} required />
+    </div>
     <div className="checkout-campo checkout-campo--calle">
       <label>Calle *</label>
       <input value={datos.calle} onChange={e => onChange('calle', e.target.value)} required />
@@ -296,6 +326,14 @@ const DireccionForm = ({ datos, onChange }) => (
     <div className="checkout-campo">
       <label>Depto</label>
       <input value={datos.depto} onChange={e => onChange('depto', e.target.value)} />
+    </div>
+    <div className="checkout-campo checkout-campo--full">
+      <label>Comentario</label>
+      <input
+        value={datos.comentario}
+        onChange={e => onChange('comentario', e.target.value)}
+        placeholder='Ej: "Casa blanca con puerta roja"'
+      />
     </div>
   </div>
 );

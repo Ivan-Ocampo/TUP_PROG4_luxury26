@@ -101,7 +101,7 @@ const obtenerPerfil = async (req, res) => {
 const actualizarPerfil = async (req, res) => {
   try {
     const {
-      nombre, apellido, email, dni,
+      nombre, apellido, email, dni, telefono,
       direccionFacturacion, direccionEntrega,
       passwordActual, nuevaPassword
     } = req.body;
@@ -109,11 +109,11 @@ const actualizarPerfil = async (req, res) => {
     const usuario = await Usuario.findById(req.usuario.id);
     if (!usuario) return res.status(404).json({ mensaje: 'Usuario no encontrado' });
 
-    // Actualizamos datos básicos y los nuevos campos de facturación
-    if (nombre)   usuario.nombre   = nombre;
-    if (apellido) usuario.apellido = apellido;
-    if (email)    usuario.email    = email;
-    if (dni)      usuario.dni      = dni;
+    if (nombre)    usuario.nombre    = nombre;
+    if (apellido)  usuario.apellido  = apellido;
+    if (email)     usuario.email     = email;
+    if (dni)       usuario.dni       = dni;
+    if (telefono !== undefined) usuario.telefono = telefono;
     if (direccionFacturacion) usuario.direccionFacturacion = direccionFacturacion;
     if (direccionEntrega)     usuario.direccionEntrega     = direccionEntrega;
 

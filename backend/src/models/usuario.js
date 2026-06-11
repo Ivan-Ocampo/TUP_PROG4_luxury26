@@ -2,10 +2,14 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 
 const direccionSchema = new mongoose.Schema({
-  calle:  { type: String, trim: true },
-  nro:    { type: String, trim: true },
-  piso:   { type: String, trim: true },
-  depto:  { type: String, trim: true }
+  pais:      { type: String, trim: true, default: 'Argentina' },
+  provincia: { type: String, trim: true },
+  ciudad:    { type: String, trim: true },
+  calle:     { type: String, trim: true },
+  nro:       { type: String, trim: true },
+  piso:      { type: String, trim: true },
+  depto:     { type: String, trim: true },
+  comentario:{ type: String, trim: true }
 }, { _id: false });
 
 const usuarioSchema = new mongoose.Schema({
@@ -14,6 +18,7 @@ const usuarioSchema = new mongoose.Schema({
   email:    { type: String, required: true, unique: true, trim: true },
   password: { type: String, required: true },
   dni:      { type: String, trim: true },
+  telefono: { type: String, trim: true },
   direccionFacturacion: { type: direccionSchema },
   direccionEntrega:     { type: direccionSchema },
   rol:    { type: String, enum: ['cliente', 'administrador'], default: 'cliente' },

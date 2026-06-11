@@ -1,8 +1,10 @@
 .perfil-container {
   display: flex;
   justify-content: center;
+  align-items: flex-start;
   padding: 40px 20px;
   min-height: 80vh;
+  box-sizing: border-box;
 }
 
 .perfil-card {
@@ -11,7 +13,9 @@
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   width: 100%;
-  max-width: 500px;
+  max-width: 780px;
+  box-sizing: border-box;
+  color-scheme: only light;
 }
 
 .perfil-card h2 {
@@ -19,12 +23,60 @@
   margin-bottom: 25px;
   color: #333;
   text-align: center;
+  font-size: 1.6rem;
 }
 
-.perfil-form {
+/* ── Tabs ── */
+.perfil-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+}
+
+.perfil-tab {
+  /* Reset completo de estilos de botón del navegador */
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+
+  padding: 9px 20px;
+  border: 2px solid #d8c8e8;
+  border-radius: 999px;
+  background-color: #ffffff;
+  color: #7a6090;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  line-height: 1.2;
+}
+
+.perfil-tab:hover {
+  background-color: #ede5f8;
+  border-color: #9b59b6;
+  color: #5a189a;
+}
+
+.perfil-tab.activa {
+  background-color: #61065b;
+  border-color: #61065b;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.perfil-tab-contenido {
   display: flex;
   flex-direction: column;
   gap: 18px;
+}
+
+/* ── Formulario ── */
+.perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .perfil-form .form-group {
@@ -37,6 +89,8 @@
   font-size: 0.9rem;
   color: #555;
   font-weight: 500;
+  text-transform: none;
+  letter-spacing: normal;
 }
 
 .perfil-form input {
@@ -45,12 +99,16 @@
   border-radius: 6px;
   font-size: 1rem;
   color: #333;
+  background-color: #ffffff;
   transition: border-color 0.2s;
+  box-sizing: border-box;
+  width: 100%;
+  color-scheme: light;
 }
 
 .perfil-form input:focus {
   outline: none;
-  border-color: #5a189a; /* Tu violeta */
+  border-color: #5a189a;
   box-shadow: 0 0 0 3px rgba(90, 24, 154, 0.1);
 }
 
@@ -59,30 +117,70 @@
   font-size: 0.95rem;
 }
 
+/* ── Subtítulo de sección dentro de tab ── */
+.perfil-subtitulo {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #5a189a;
+}
+
+/* ── Divisor ── */
 .divisor {
   height: 1px;
   background-color: #eee;
-  margin: 10px 0;
+  margin: 4px 0;
 }
 
-.btn-guardar-perfil {
-  background-color: #5a189a; /* Tu violeta */
-  color: white;
-  border: none;
-  padding: 14px;
-  border-radius: 6px;
-  font-size: 1rem;
-  font-weight: bold;
+/* ── Grid de 2 columnas ── */
+.perfil-grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 20px;
+}
+
+.perfil-campo-full {
+  grid-column: 1 / -1;
+}
+
+/* ── Input de solo lectura (País) ── */
+.perfil-input-readonly {
+  background-color: #f5f5f5 !important;
+  color: #888 !important;
+  cursor: default;
+}
+
+/* ── Checkbox ── */
+.perfil-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  color: #444;
   cursor: pointer;
-  transition: background-color 0.2s;
-  margin-top: 10px;
+  padding: 12px 16px;
+  background-color: #f5eeff;
+  border-radius: 8px;
+  border: 1px solid #d8c8e8;
 }
 
-.btn-guardar-perfil:hover {
-  background-color: #431075;
+.perfil-checkbox input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #61065b;
+  flex-shrink: 0;
 }
 
-/* --- Mensajes de alerta --- */
+/* ── Botones de acción ── */
+.perfil-acciones {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+}
+
+/* ── Mensajes de alerta ── */
 .mensaje-alerta {
   padding: 12px;
   border-radius: 6px;
@@ -103,20 +201,18 @@
   border: 1px solid #c8e6c9;
 }
 
-/* --- Contenedor del input con ojito --- */
+/* ── Ojito de contraseña ── */
 .password-input-wrapper {
   position: relative;
   display: flex;
   width: 100%;
 }
 
-/* Aseguramos que el input ocupe todo el espacio y le damos padding derecho para que el texto no pise al ícono */
 .password-input-wrapper input {
   width: 100%;
-  padding-right: 40px; 
+  padding-right: 44px;
 }
 
-/* --- Botón del ojito --- */
 .btn-mostrar-password {
   position: absolute;
   right: 10px;
@@ -135,10 +231,29 @@
 }
 
 .btn-mostrar-password:hover {
-  color: #5a189a; /* Tu violeta característico */
+  color: #5a189a;
 }
 
-/* Esto evita que el botón envíe el formulario si le haces clic rápido */
 .btn-mostrar-password:focus {
   outline: none;
+}
+
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .perfil-card {
+    padding: 20px 16px;
+  }
+
+  .perfil-grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .perfil-campo-full {
+    grid-column: 1;
+  }
+
+  .perfil-tab {
+    font-size: 0.82rem;
+    padding: 8px 14px;
+  }
 }

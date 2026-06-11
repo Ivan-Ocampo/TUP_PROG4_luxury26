@@ -22,7 +22,8 @@ const pagoSchema = new mongoose.Schema({
 
 // Dirección embebida en la orden (snapshot al momento de comprar)
 const direccionOrdenSchema = new mongoose.Schema({
-  calle: String, nro: String, piso: String, depto: String
+  pais: String, provincia: String, ciudad: String,
+  calle: String, nro: String, piso: String, depto: String, comentario: String
 }, { _id: false });
 
 const ordenCompraSchema = new mongoose.Schema({
@@ -43,6 +44,7 @@ const ordenCompraSchema = new mongoose.Schema({
     nombre:              String,
     email:               String,
     dni:                 String,
+    telefono:            String,
     direccionFacturacion: { type: direccionOrdenSchema },
     direccionEntrega:     { type: direccionOrdenSchema }
   },

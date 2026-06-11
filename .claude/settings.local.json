@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(Get-ChildItem -Path \"c:\\\\Users\\\\eocampo\\\\Documents\\\\TUP\\\\PROG4\\\\luxury2\\\\luxury-carrito-final\\\\luxury\" -Directory)",
-      "Bash(Select-Object Name)",
-      "Bash(Test-Path \"C:\\\\Users\\\\eocampo\\\\Documents\\\\TUP\\\\PROG4\\\\luxury2\\\\luxury-carrito-final\\\\notas06-07-2026.txt\")"
-    ]
-  }
-}

@@ -4,9 +4,28 @@
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: #61065b; /* ¡Acá agregamos el fondo violeta! */
+  background-color: #61065b;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   border-bottom: 3px solid #d4af37;
+  position: relative;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* --- Botón hamburguesa (oculto en desktop) --- */
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  padding: 4px;
+  align-items: center;
+  justify-content: center;
 }
 
 /* --- Estilos del Logo --- */
@@ -14,7 +33,7 @@
   font-size: 1.8rem;
   font-weight: bold;
   text-decoration: none;
-  color: #ffffff; /* Cambiamos a blanco para que resalte */
+  color: #ffffff;
   transition: transform 0.2s ease;
 }
 
@@ -26,8 +45,8 @@
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 2rem; /* Espacio impecable entre cada enlace/ícono */
-  list-style: none; /* Chau puntitos de la lista */
+  gap: 2rem;
+  list-style: none;
   margin: 0;
   padding: 0;
 }
@@ -35,7 +54,7 @@
 /* --- Estilos de cada enlace e ícono --- */
 .nav-links li a {
   text-decoration: none;
-  color: #ffffff; /* Letras e íconos en blanco */
+  color: #ffffff;
   font-size: 1.1rem;
   font-weight: 500;
   display: flex;
@@ -43,13 +62,10 @@
   transition: color 0.3s ease;
 }
 
-
-/* --- Efecto hover para los enlaces --- */
 .nav-links li a:hover {
-  color: #e0aaff; 
+  color: #e0aaff;
 }
 
-/* --- Ajuste específico si querés que el ícono sea un toque más grande al pasar el mouse --- */
 .nav-links li a svg {
   transition: transform 0.3s ease;
 }
@@ -71,35 +87,35 @@
   align-items: center;
   color: white;
   transition: transform 0.2s;
+  position: relative;
 }
 
 .user-icon-trigger:hover {
   transform: scale(1.1);
 }
 
-/* El cuadro del menú */
 /* --- El contenedor blanco del menú --- */
 .dropdown-menu {
   position: absolute;
-  top: 45px; 
+  top: 45px;
   right: 0;
   background-color: white;
-  min-width: 220px; /* 1. Aumentamos un poquito el ancho (antes era 180px) */
+  min-width: 220px;
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   border-radius: 8px;
   padding: 10px 0;
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  overflow: hidden; /* 2. MAGIA: Corta cualquier cosa que se salga de los bordes redondeados */
+  overflow: hidden;
 }
 
 /* --- Los enlaces e ítems adentro del menú --- */
-.nav-links .dropdown-menu a, 
+.nav-links .dropdown-menu a,
 .nav-links .dropdown-menu .btn-logout-menu {
   padding: 12px 20px;
   text-decoration: none;
-  color: #333333; 
+  color: #333333;
   font-size: 0.95rem;
   display: flex;
   align-items: center;
@@ -110,33 +126,13 @@
   width: 100%;
   text-align: left;
   cursor: pointer;
-  box-sizing: border-box; /* 3. MAGIA: Hace que el ancho 100% incluya el padding */
-  white-space: nowrap; /* 4. Evita que textos largos se partan en dos líneas */
+  box-sizing: border-box;
+  white-space: nowrap;
 }
 
-/* Enlaces e ítems dentro del menú */
-.nav-links .dropdown-menu a, 
-.nav-links .dropdown-menu .btn-logout-menu {
-  padding: 12px 20px;
-  text-decoration: none;
-  color: #333333; 
-  font-size: 0.95rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: background 0.2s;
-  border: none;
-  background: none;
-  width: 100%;
-  text-align: left;
-  cursor: pointer;
-  box-sizing: border-box; 
-  white-space: nowrap; 
-}
-
-.nav-links .dropdown-menu a:hover, 
+.nav-links .dropdown-menu a:hover,
 .nav-links .dropdown-menu .btn-logout-menu:hover {
-  background-color: #f3e5f5; 
+  background-color: #f3e5f5;
   color: #5a189a;
 }
 
@@ -155,6 +151,12 @@
   font-family: inherit;
   font-weight: 500;
 }
+
+/* Etiquetas de texto (ocultas en desktop) */
+.nav-label {
+  display: none;
+}
+
 /* --- Badge del carrito --- */
 .carrito-nav-item {
   position: relative;
@@ -185,10 +187,6 @@
 }
 
 /* ── Punto rojo sobre el ícono de usuario ── */
-.user-icon-trigger {
-  position: relative;
-}
-
 .user-notif-dot {
   position: absolute;
   top: -2px;
@@ -306,7 +304,6 @@
   border-bottom: none;
 }
 
-/* Color de acento según tipo */
 .notif-item--carrito_pendiente { border-left: 3px solid #7d0875; }
 .notif-item--carrito_expirado  { border-left: 3px solid #e67e22; }
 .notif-item--stock_eliminado   { border-left: 3px solid #c0392b; }
@@ -335,4 +332,106 @@
 
 .notif-btn-cerrar:hover {
   color: #c0392b;
+}
+
+/* ── Responsive: menú hamburguesa ── */
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: flex;
+  }
+
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #61065b;
+    border-top: 2px solid #d4af37;
+    border-bottom: 2px solid #d4af37;
+    z-index: 999;
+    padding: 0.5rem 0;
+    gap: 0;
+  }
+
+  .nav-links.hamburger-open {
+    display: flex;
+  }
+
+  .nav-links > li {
+    width: 100%;
+    padding: 0;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+  }
+
+  .nav-links > li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-links > li > a,
+  .notif-trigger,
+  .user-icon-trigger {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.5rem;
+    font-size: 1rem;
+    color: #ffffff;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .nav-label {
+    display: inline;
+  }
+
+  .notif-panel {
+    position: fixed;
+    top: 70px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-height: 60vh;
+    overflow-y: auto;
+    z-index: 1100;
+  }
+
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: #4a044a;
+    width: 100%;
+    padding: 0;
+  }
+
+  .nav-links .dropdown-menu a,
+  .nav-links .dropdown-menu .btn-logout-menu {
+    color: #ffffff;
+    padding: 0.85rem 1.5rem 0.85rem 3rem;
+    font-size: 1rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 0;
+    white-space: normal;
+  }
+
+  .nav-links .dropdown-menu a:hover,
+  .nav-links .dropdown-menu .btn-logout-menu:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+  }
+
+  .nav-links .dropdown-menu a:last-child,
+  .nav-links .dropdown-menu .btn-logout-menu:last-child {
+    border-bottom: none;
+  }
+
+  .menu-icon {
+    color: #d4af37;
+  }
+
+  .dropdown-menu hr {
+    display: none;
+  }
 }

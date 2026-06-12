@@ -1,5 +1,6 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useCart } from './context/CartContext';
 
 import AdminRoute from './components/adminRoute/AdminRoute';
 import Navbar from './components/navigation/Navbar';
@@ -20,12 +21,20 @@ import ConfirmarCompra from './pages/confirmarCompra/ConfirmarCompra';
 import ForgotPassword from './pages/forgotpassword/Forgotpassword';
 import ResetPassword from './pages/resetPassword/ResetPassword';
 
+const RouteChangeHandler = () => {
+  const location = useLocation();
+  const { refrescarCarrito } = useCart();
+  useEffect(() => { refrescarCarrito(); }, [location.pathname]);
+  return null;
+};
+
 function App() {
   return (
     <CartProvider>
     <NotificacionProvider>
       <BrowserRouter>
         <div className="app-container">
+          <RouteChangeHandler />
           <Navbar brandName="Luxury" />
 
           <main className="main-content">

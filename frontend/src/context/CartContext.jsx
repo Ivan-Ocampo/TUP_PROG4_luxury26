@@ -35,9 +35,13 @@ export const CartProvider = ({ children }) => {
       const respuesta = await obtenerCarritoApi(usuarioId);
       setItems(respuesta.items || []);
 
-      // Si el backend eliminó items sin stock, los guardamos para mostrar la alerta
       if (respuesta.itemsEliminados && respuesta.itemsEliminados.length > 0) {
         setItemsEliminados(respuesta.itemsEliminados);
+        window.dispatchEvent(new Event('carritoActualizado'));
+      }
+
+      if (respuesta.carritoExpirado) {
+        window.dispatchEvent(new Event('carritoActualizado'));
       }
     } catch (error) {
       setItems([]);
@@ -56,6 +60,7 @@ export const CartProvider = ({ children }) => {
     if (!usuarioId) return;
     await agregarItemApi(usuarioId, productoId, cantidad);
     await refrescarCarrito();
+    window.dispatchEvent(new Event('carritoActualizado'));
   };
 
   const actualizarCantidad = async (productoId, cantidad) => {
@@ -93,8 +98,9 @@ export const CartProvider = ({ children }) => {
         vaciarCarrito,
         cantidadTotal,
         total,
-        itemsEliminados,       // array de nombres de productos eliminados por stock
-        limpiarItemsEliminados // función para resetear la alerta
+        itemsEliminados,
+        limpiarItemsEliminados,
+        refrescarCarrito
       }}
     >
       {children}

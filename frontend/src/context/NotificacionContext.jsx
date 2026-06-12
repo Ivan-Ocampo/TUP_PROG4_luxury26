@@ -30,6 +30,12 @@ export const NotificacionProvider = ({ children }) => {
   // Carga inicial y al cambiar de usuario
   useEffect(() => { refrescar(); }, [usuarioId, refrescar]);
 
+  // Refresca cuando se agrega algo al carrito
+  useEffect(() => {
+    window.addEventListener('carritoActualizado', refrescar);
+    return () => window.removeEventListener('carritoActualizado', refrescar);
+  }, [refrescar]);
+
   const eliminar = async (id) => {
     await eliminarNotificacionApi(id);
     setNotificaciones(prev => prev.filter(n => n._id !== id));

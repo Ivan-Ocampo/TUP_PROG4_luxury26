@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { getUserRolFromToken, getToken } from "../../utils/auth";
 import { useCart } from "../../context/CartContext";
 import { useNotificaciones } from "../../context/NotificacionContext";
-import { FaUserCircle, FaSignOutAlt, FaShoppingCart, FaPlus, FaUsers, FaUser, FaBell } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt, FaShoppingCart, FaPlus, FaUsers, FaUser, FaBell, FaBars, FaTimes } from "react-icons/fa";
 import "./Navbar.css";
 
 const ICONOS_TIPO = {
@@ -15,9 +15,10 @@ const ICONOS_TIPO = {
 const Navbar = () => {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const [panelNotif, setPanelNotif] = useState(false);
-  const menuRef  = useRef(null);
-  const notifRef = useRef(null);
-  const location = useLocation();
+  const [hamburgerAbierto, setHamburgerAbierto] = useState(false);
+  const menuRef    = useRef(null);
+  const notifRef   = useRef(null);
+  const navbarRef  = useRef(null);
 
   const { cantidadTotal } = useCart();
   const { notificaciones, eliminar, eliminarTodas } = useNotificaciones();
@@ -31,35 +32,55 @@ const Navbar = () => {
     localStorage.removeItem("token");
     window.dispatchEvent(new Event("authChange"));
     setMenuAbierto(false);
+    setHamburgerAbierto(false);
     window.location.href = "/";
   };
 
-  // Cierra ambos paneles al hacer click afuera
   useEffect(() => {
     const handleClickAfuera = (e) => {
       if (menuRef.current  && !menuRef.current.contains(e.target))  setMenuAbierto(false);
       if (notifRef.current && !notifRef.current.contains(e.target)) setPanelNotif(false);
+      if (navbarRef.current && !navbarRef.current.contains(e.target)) setHamburgerAbierto(false);
     };
     document.addEventListener("mousedown", handleClickAfuera);
     return () => document.removeEventListener("mousedown", handleClickAfuera);
   }, []);
 
+  // Cierra el hamburger al agrandar la pantalla
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) setHamburgerAbierto(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   return (
-    <nav className="navbar">
-      <div className="logo">
-        <Link to="/">💎 Luxury</Link>
+    <nav className="navbar" ref={navbarRef}>
+      <div className="navbar-left">
+        <button
+          className="hamburger-btn"
+          onClick={() => setHamburgerAbierto(h => !h)}
+          aria-label="Menú"
+        >
+          {hamburgerAbierto ? <FaTimes size={22} /> : <FaBars size={22} />}
+        </button>
+        <div className="logo">
+          <Link to="/">💎 Luxury</Link>
+        </div>
       </div>
 
-      <ul className="nav-links">
+      <ul className={`nav-links${hamburgerAbierto ? " hamburger-open" : ""}`}>
         <li>
-          <Link to="/">Inicio</Link>
+          <Link to="/" onClick={() => setHamburgerAbierto(false)}>Inicio</Link>
         </li>
 
         {/* ── Carrito ── */}
         <li className="carrito-nav-item">
-          <Link to="/carrito" title="Ver Carrito">
+          <Link to="/carrito" onClick={() => setHamburgerAbierto(false)}>
             <FaShoppingCart size={22} />
             {cantidadTotal > 0 && <span className="carrito-badge">{cantidadTotal}</span>}
+            <span className="nav-label">Carrito</span>
           </Link>
         </li>
 
@@ -73,6 +94,7 @@ const Navbar = () => {
             >
               <FaBell size={22} />
               {hayNotificaciones && <span className="notif-badge">{notificaciones.length}</span>}
+              <span className="nav-label">Notificaciones</span>
             </div>
 
             {panelNotif && (
@@ -117,21 +139,20 @@ const Navbar = () => {
                 onClick={() => { setMenuAbierto(m => !m); setPanelNotif(false); }}
               >
                 <FaUserCircle size={26} />
-                {/* Punto rojo si hay notificaciones */}
-                {hayNotificaciones && <span className="user-notif-dot" />}
+                <span className="nav-label">Mi cuenta</span>
               </div>
 
               {menuAbierto && (
                 <div className="dropdown-menu">
-                  <Link to="/mi-Perfil" onClick={() => setMenuAbierto(false)}>
+                  <Link to="/mi-Perfil" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
                     <FaUser className="menu-icon" /> Mi Perfil
                   </Link>
                   {esAdmin && (
                     <>
-                      <Link to="/admin/altaProducto" onClick={() => setMenuAbierto(false)}>
+                      <Link to="/admin/altaProducto" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
                         <FaPlus className="menu-icon" /> Agregar Producto
                       </Link>
-                      <Link to="/admin/usuarios" onClick={() => setMenuAbierto(false)}>
+                      <Link to="/admin/usuarios" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
                         <FaUsers className="menu-icon" /> Usuarios
                       </Link>
                       <hr />

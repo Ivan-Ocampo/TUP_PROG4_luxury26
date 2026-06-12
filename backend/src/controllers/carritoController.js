@@ -1,5 +1,6 @@
 const { Carrito } = require('../models/carrito');
 const { Producto } = require('../models/producto');
+const { Notificacion } = require('../models/notificacion');
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Función auxiliar reutilizada por obtenerCarrito y por authController (login).
@@ -46,13 +47,27 @@ const obtenerCarrito = async (req, res) => {
       carrito.total = 0;
       extenderExpiracion(carrito);
       await carrito.save();
+
+      await Notificacion.create({
+        usuarioId: carrito.usuarioId,
+        tipo: 'carrito_expirado',
+        mensaje: 'Tu carrito expiró. Los productos que habías seleccionado fueron eliminados porque no confirmaste la compra a tiempo.'
+      });
+
       return res.status(200).json({ ...carrito.toObject(), itemsEliminados: [], carritoExpirado: true });
     }
 
     // Verificamos stock de cada item y eliminamos los que ya no tienen
     const itemsEliminados = await verificarYLimpiarStock(carrito);
 
-    // Recargamos con populate tras posibles modificaciones
+    if (itemsEliminados.length > 0) {
+      await Notificacion.create({
+        usuarioId: carrito.usuarioId,
+        tipo: 'stock_eliminado',
+        mensaje: `Se eliminaron del carrito los siguientes productos por falta de stock: ${itemsEliminados.join(', ')}.`
+      });
+    }
+
     const carritoActualizado = await Carrito.findOne({ usuarioId: req.params.usuarioId }).populate('items.productoId');
 
     res.status(200).json({ ...carritoActualizado.toObject(), itemsEliminados });
@@ -83,8 +98,24 @@ const agregarItemAlCarrito = async (req, res) => {
     }
 
     carrito.total = carrito.items.reduce((acc, item) => acc + item.cantidad * item.precioUnitario, 0);
-    extenderExpiracion(carrito); // Cada modificación reinicia el contador de 24h
+    extenderExpiracion(carrito);
     await carrito.save();
+
+    const hoy = new Date();
+    hoy.setHours(0, 0, 0, 0);
+    const yaNotificado = await Notificacion.findOne({
+      usuarioId,
+      tipo: 'carrito_pendiente',
+      fechaCreacion: { $gte: hoy }
+    });
+    if (!yaNotificado) {
+      await Notificacion.create({
+        usuarioId,
+        tipo: 'carrito_pendiente',
+        mensaje: 'Tenés productos en tu carrito sin finalizar la compra.'
+      });
+    }
+
     res.status(200).json({ mensaje: 'Producto agregado', carrito });
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al agregar al carrito', error: error.message });

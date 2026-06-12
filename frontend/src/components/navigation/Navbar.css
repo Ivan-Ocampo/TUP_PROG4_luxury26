@@ -5,7 +5,8 @@
   align-items: center;
   padding: 1rem 2rem;
   background-color: #61065b; /* ¡Acá agregamos el fondo violeta! */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Opcional: una sombrita sutil para que despegue del fondo */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #d4af37;
 }
 
 /* --- Estilos del Logo --- */

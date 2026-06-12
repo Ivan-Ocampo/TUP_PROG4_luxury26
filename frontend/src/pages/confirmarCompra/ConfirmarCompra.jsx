@@ -93,9 +93,14 @@ const ConfirmarCompra = () => {
     setPagos(prev => {
       const copia = prev.map(p => ({ ...p }));
       copia[idx][campo] = valor;
-      // Si cambia a un método sin tarjeta, limpiamos los datos de tarjeta
       if (campo === 'metodo' && valor !== 'debito' && valor !== 'credito') {
         copia[idx].tarjeta = tarjetaVacia();
+      }
+      if (campo === 'monto' && dosPagos) {
+        const ingresado = parseFloat(valor) || 0;
+        const resto = Math.max(0, total - ingresado);
+        const otroIdx = idx === 0 ? 1 : 0;
+        copia[otroIdx].monto = ingresado > 0 ? String(parseFloat(resto.toFixed(2))) : '';
       }
       return copia;
     });
@@ -125,15 +130,20 @@ const ConfirmarCompra = () => {
     }
 
     // Construimos el array de pagos para enviar al backend
-    const pagosValidos = dosPagos ? pagos : [pagos[0]];
-    for (const p of pagosValidos) {
-      if (!p.monto || isNaN(Number(p.monto)) || Number(p.monto) <= 0) {
-        return setError('Ingresá un monto válido para cada forma de pago.');
+    const pagosValidos = dosPagos
+      ? pagos
+      : [{ ...pagos[0], monto: String(total) }]; // pago único: el monto siempre es el total
+
+    if (dosPagos) {
+      for (const p of pagosValidos) {
+        if (!p.monto || isNaN(Number(p.monto)) || Number(p.monto) <= 0) {
+          return setError('Ingresá un monto válido para cada forma de pago.');
+        }
       }
-    }
-    const sumaPagos = pagosValidos.reduce((acc, p) => acc + Number(p.monto), 0);
-    if (Math.abs(sumaPagos - total) > 0.01) {
-      return setError(`Los montos deben sumar el total: $${total}`);
+      const sumaPagos = pagosValidos.reduce((acc, p) => acc + Number(p.monto), 0);
+      if (Math.abs(sumaPagos - total) > 0.01) {
+        return setError(`Los montos deben sumar el total: $${total}`);
+      }
     }
 
     const pagosPayload = pagosValidos.map(p => ({

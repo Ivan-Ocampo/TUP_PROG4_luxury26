@@ -28,6 +28,7 @@ function App() {
         <div className="app-container">
           <Navbar brandName="Luxury" />
 
+          <main className="main-content">
           <Routes>
             <Route path="/" element={<Catalogo />} />
             <Route path="/producto/:id" element={<DetalleProducto />} />
@@ -52,6 +53,7 @@ function App() {
               element={<AdminRoute><EditarProducto /></AdminRoute>}
             />
           </Routes>
+          </main>
 
           <Footer year={new Date().getFullYear()} companyName="Luxury" />
         </div>

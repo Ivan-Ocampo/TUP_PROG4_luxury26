@@ -1,12 +1,8 @@
 # Luxury Joyería
 
-Aplicación web full stack de tienda online (e-commerce) de joyería, desarrollada como
-Trabajo Práctico Integrador - Entrega Final de la cátedra Programación IV de la
-Tecnicatura Universitaria en Programación (UTN FRCU).
+Aplicación web full stack de tienda online (e-commerce) de joyería, desarrollada como Trabajo Práctico Integrador de la cátedra Programación IV de la Tecnicatura Universitaria en Programación (UTN FRCU).
 
-Integra autenticación de usuarios con JWT, recuperación de contraseña por correo, gestión
-completa de carrito y órdenes de compra, control de stock, diferenciación de roles
-(cliente / administrador) y un panel de administración.
+Integra autenticación de usuarios con JWT, recuperación de contraseña por correo, gestión completa de carrito y órdenes de compra, control de stock, diferenciación de roles (cliente / administrador) y un panel de administración.
 
 Integrantes: Espinosa Ezequiel, Maldonado Carlos, Ocampo Iván y Sanchez Mauricio.
 
@@ -82,16 +78,13 @@ Archivo frontend/.env:
 
 ## Funcionalidades principales
 
-- Autenticación y autorización: registro, login, JWT, encriptación de contraseñas
-  (bcrypt), middleware de autenticación y de autorización por roles.
+- Autenticación y autorización: registro, login, JWT, encriptación de contraseñas (bcrypt), middleware de autenticación y de autorización por roles.
 - Recuperación de contraseña por correo electrónico (token temporal de un solo uso).
 - Catálogo de productos: nombre, precio, categoría, descripción y stock.
 - Carrito de compras: agregar, modificar cantidades, eliminar, vaciar y ver total.
-- Órdenes de compra: generación, asociación al usuario, descuento de stock, número
-  de orden autoincremental, historial y detalle.
+- Órdenes de compra: generación, asociación al usuario, descuento de stock, número de orden autoincremental, historial y detalle.
 - Perfil de usuario: ver y editar datos personales, cambiar contraseña.
-- Panel de administrador: ABM de productos (con baja lógica y stock), gestión de
-  usuarios (editar, baja lógica y recuperar) y visualización de órdenes.
+- Panel de administrador: ABM de productos (con baja lógica y stock), gestión de usuarios (editar, baja lógica y recuperar) y visualización de órdenes.
 - Estado global mediante Context API y persistencia de sesión con localStorage.
 
 

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getUserRolFromToken, getToken } from "../../utils/auth";
 import { useCart } from "../../context/CartContext";
 import { useNotificaciones } from "../../context/NotificacionContext";
-import { FaUserCircle, FaSignOutAlt, FaShoppingCart, FaPlus, FaUsers, FaUser, FaBell, FaBars, FaTimes } from "react-icons/fa";
+import { FaUserCircle, FaSignOutAlt, FaShoppingCart, FaPlus, FaUsers, FaUser, FaBell, FaBars, FaTimes, FaClipboardList } from "react-icons/fa";
 import "./Navbar.css";
 
 const ICONOS_TIPO = {
@@ -147,6 +147,11 @@ const Navbar = () => {
                   <Link to="/mi-Perfil" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
                     <FaUser className="menu-icon" /> Mi Perfil
                   </Link>
+                  {!esAdmin && (
+                    <Link to="/mis-compras" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
+                      <FaClipboardList className="menu-icon" /> Mis Compras
+                    </Link>
+                  )}
                   {esAdmin && (
                     <>
                       <Link to="/admin/altaProducto" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
@@ -154,6 +159,9 @@ const Navbar = () => {
                       </Link>
                       <Link to="/admin/usuarios" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
                         <FaUsers className="menu-icon" /> Usuarios
+                      </Link>
+                      <Link to="/admin/ordenes" onClick={() => { setMenuAbierto(false); setHamburgerAbierto(false); }}>
+                        <FaClipboardList className="menu-icon" /> Órdenes
                       </Link>
                       <hr />
                     </>

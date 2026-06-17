@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getUsuarios, actualizarUsuarioAdmin, eliminarUsuarioAdmin } from '../../services/usuarioService'; // Acá después sumarás tus funciones de update/delete
 import { FaPencilAlt, FaTrash, FaTimes } from 'react-icons/fa'; // Importamos los íconos
 import '../altaProducto/AltaProducto.css'; // Reutilizamos estilos para mantener coherencia
+import './Usuarios.css';
 
 const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -95,74 +96,65 @@ const Usuarios = () => {
   if (cargando) return <div className="form-container"><h3>Cargando usuarios...</h3></div>;
 
   return (
-    <div className="form-container" style={{ maxWidth: '800px', position: 'relative' }}>
+    <div className="form-container" style={{ maxWidth: '950px', position: 'relative' }}>
       <h2>Gestión de Usuarios</h2>
       
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
 
-      <table className="tabla-usuarios" style={{ width: '100%', marginTop: '20px', borderCollapse: 'collapse' }}>
-        <thead>
-          <tr style={{ backgroundColor: '#5a189a', color: 'white' }}>
-            <th style={{ padding: '12px' }}>Nombre</th>
-            <th style={{ padding: '12px' }}>Email</th>
-            <th style={{ padding: '12px' }}>Rol</th>
-            <th style={{ padding: '12px' }}>Estado</th> 
-            <th style={{ padding: '12px' }}>Acciones</th> {/* Columna agregada */}
-          </tr>
-        </thead>
-        <tbody>
-          {usuarios.map((u) => (
-            <tr key={u._id} style={{ borderBottom: '1px solid #ddd', textAlign: 'center' }}>
-              <td style={{ padding: '10px' }}>{u.nombre}</td>
-              <td style={{ padding: '10px' }}>{u.email}</td>
-              <td style={{ padding: '10px' }}>
-                <span style={{ 
-                  backgroundColor: u.rol === 'administrador' ? '#ffd700' : '#e0e0e0',
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  fontSize: '0.85rem',
-                  fontWeight: 'bold'
-                }}>
-                  {u.rol}
-                </span>
-              </td>
-              <td style={{ padding: '10px' }}>
-                <span style={{ 
-                  backgroundColor: u.activo !== false ? '#4caf50' : '#f44336',
-                  color: 'white',
-                  padding: '4px 8px',
-                  borderRadius: '4px',
-                  fontSize: '0.85rem',
-                  fontWeight: 'bold'
-                }}>
-                  {u.activo !== false ? 'Activo' : 'Inactivo'}
-                </span>
-              </td>
-              
-              {/* BOTONES DE LÁPIZ Y TACHITO */}
-              <td style={{ padding: '10px', display: 'flex', justifyContent: 'center', gap: '15px' }}>
-                <button 
-                  type="button" 
-                  title="Editar"
-                  onClick={() => handleAbrirModal(u)}
-                  style={{ background: 'none', border: 'none', color: '#0284c7', fontSize: '1.2rem', cursor: 'pointer' }}
-                >
-                  <FaPencilAlt />
-                </button>
-
-                <button 
-                  type="button" 
-                  title="Eliminar"
-                  onClick={() => handleEliminarClick(u._id, u.nombre)}
-                  style={{ background: 'none', border: 'none', color: '#dc2626', fontSize: '1.2rem', cursor: 'pointer' }}
-                >
-                  <FaTrash />
-                </button>
-              </td>
+      <div className="usuarios-tabla-wrapper">
+        <table className="usuarios-tabla">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Rol</th>
+              <th>Estado</th>
+              <th>Acciones</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {usuarios.map((u) => (
+              <tr key={u._id}>
+                <td>{u.nombre}</td>
+                <td>{u.email}</td>
+                <td>
+                  <span className={`usuarios-badge ${u.rol === 'administrador' ? 'usuarios-badge--rol-admin' : 'usuarios-badge--rol-cliente'}`}>
+                    {u.rol}
+                  </span>
+                </td>
+                <td>
+                  <span className={`usuarios-badge ${u.activo !== false ? 'usuarios-badge--activo' : 'usuarios-badge--inactivo'}`}>
+                    {u.activo !== false ? 'Activo' : 'Inactivo'}
+                  </span>
+                </td>
+
+                {/* BOTONES DE LÁPIZ Y TACHITO */}
+                <td>
+                  <div className="usuarios-acciones">
+                    <button
+                      type="button"
+                      title="Editar"
+                      onClick={() => handleAbrirModal(u)}
+                      className="usuarios-btn-accion usuarios-btn-editar"
+                    >
+                      <FaPencilAlt />
+                    </button>
+
+                    <button
+                      type="button"
+                      title="Eliminar"
+                      onClick={() => handleEliminarClick(u._id, u.nombre)}
+                      className="usuarios-btn-accion usuarios-btn-eliminar"
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/*  MODAL FLOTANTE DE EDICIÓN */}
       {modalAbierto && (
@@ -196,7 +188,7 @@ const Usuarios = () => {
               <div style={{ marginBottom: '15px', textAlign: 'left' }}>
                 <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>Rol</label>
                 <select name="rol" value={usuarioForm.rol} onChange={handleChange} style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '2px solid #ccc', boxSizing: 'border-box', backgroundColor: 'white', color: 'black' }}>
-                  <option value="usuario">Usuario</option>
+                  <option value="cliente">Cliente</option>
                   <option value="administrador">Administrador</option>
                 </select>
               </div>

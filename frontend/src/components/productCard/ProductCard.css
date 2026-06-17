@@ -58,6 +58,17 @@
   margin: 0.5rem 0;
 }
 
+.product-stock {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1a7a1a;
+  margin: 0 0 0.5rem;
+}
+
+.product-stock--agotado {
+  color: #c0392b;
+}
+
 .product-button {
   background-color: #61dafb;
   color: #282c34;

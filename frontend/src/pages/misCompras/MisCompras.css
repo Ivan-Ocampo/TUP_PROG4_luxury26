@@ -1,0 +1,254 @@
+.mc-container {
+  max-width: 1100px;
+  margin: 40px auto;
+  padding: 35px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  border: 1px solid #d326e6;
+  font-family: 'Arial', sans-serif;
+}
+
+.mc-titulo {
+  color: #b237d4;
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ── Tabs ── */
+.mc-tabs {
+  display: flex;
+  gap: 10px;
+    margin-bottom: 24px;
+  padding-bottom: 16px;
+}
+
+.mc-tab {
+  padding: 8px 22px;
+  border: 2px solid #61065b;
+  border-radius: 20px;
+  background: #fff;;
+  color: #61065b;
+  font-size: 0.95rem;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mc-tab:hover { background: #f0e0ef; }
+
+.mc-tab--activo {
+  background: #61065b;
+  color: #fff;
+  border-color: #61065b;
+}
+
+.mc-badge {
+  background: #61065b;
+  color: #fff;
+  border-radius: 50%;
+  padding: 1px 7px;
+  font-size: 0.8rem;
+}
+
+/* ── Estado vacío ── */
+.mc-vacio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 50px 30px;
+  color: #61065b;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.mc-cargando {
+  color: #61065b;
+  font-weight: 600;
+  padding: 20px 0;
+}
+
+.mc-error {
+  color: #c0392b;
+  background: #fff3f3;
+  border: 1px solid #e74c3c;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-bottom: 12px;
+}
+
+/* ── Tabla ── */
+.mc-tabla-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mc-tabla {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.mc-tabla th,
+.mc-tabla td {
+  padding: 14px 16px;
+  text-align:center;
+  border-bottom: 1px solid #61065b;
+}
+
+.mc-tabla thead {
+  background: #61065b;
+  color: #fff;
+}
+
+.mc-tabla tbody tr {
+  background-color: #fff;
+  color: #61065b;
+}
+
+.mc-tabla tbody tr:hover {
+  background-color: #f7f0f7;
+}
+
+.mc-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.mc-nro        { font-weight: normal; white-space: nowrap; }
+.mc-descripcion { text-align: left; max-width: 340px; font-weight: normal; color: #444; }
+.mc-monto      { white-space: nowrap; }
+.mc-fecha      { white-space: nowrap; }
+
+.mc-ver-cell { text-align: center; }
+
+.mc-btn-ver {
+  background: #61065b;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 14px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.mc-btn-ver:hover { background: #7d0875; }
+
+.mc-checkbox-cell { text-align: center; }
+
+.mc-checkbox {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border: 2px solid #61065b;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  vertical-align: middle;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.mc-checkbox:hover {
+  border-color: #7d0875;
+  background: #f7f0f7;
+}
+
+.mc-checkbox:checked {
+  background: #61065b;
+  border-color: #61065b;
+}
+
+.mc-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  left: 9px;
+  top: 4px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* ── Modal ── */
+.mc-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.mc-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.mc-modal-titulo {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #61065b;
+  margin: 0 0 14px;
+}
+
+.mc-modal-texto {
+  color: #333;
+  font-size: 1rem;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.mc-modal-acciones {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.mc-btn-cancelar,
+.mc-btn-confirmar {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.mc-btn-confirmar { background: #61065b; color: #fff; }
+.mc-btn-cancelar  { background: #eee;    color: #333; }
+
+.mc-btn-confirmar:hover { background: #7d0875; }
+.mc-btn-cancelar:hover  { background: #ddd; }
+
+.mc-btn-cancelar:disabled,
+.mc-btn-confirmar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+@media (max-width: 600px) {
+  .mc-tabla th, .mc-tabla td { padding: 10px 8px; font-size: 0.85rem; }
+  .mc-modal { padding: 24px 16px; }
+  .mc-modal-acciones { flex-direction: column; }
+}

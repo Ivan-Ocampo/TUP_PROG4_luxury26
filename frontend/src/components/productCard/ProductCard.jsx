@@ -10,6 +10,7 @@ const ProductCard = ({
   imagenUrl,
   descripcion,
   precio,
+  stock,
   categoriaId,
   onAddToCart,
   esAdmin,
@@ -46,6 +47,9 @@ const ProductCard = ({
 
         <p className="product-description">{descripcion}</p>
         <span className="product-price">${precio}</span>
+        <span className={`product-stock ${Number(stock) <= 0 ? 'product-stock--agotado' : ''}`}>
+          {Number(stock) > 0 ? `Stock: ${stock}` : 'Sin stock'}
+        </span>
 
         <div className="product-actions">
           {/* Botón para ir a la vista de Detalle */}

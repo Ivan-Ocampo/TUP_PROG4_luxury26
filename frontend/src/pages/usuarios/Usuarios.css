@@ -1,0 +1,87 @@
+/* ── Tabla de usuarios (mismo estilo que Gestión de Órdenes) ── */
+.usuarios-tabla-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 20px;
+}
+
+.usuarios-tabla {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.usuarios-tabla th,
+.usuarios-tabla td {
+  padding: 13px 14px;
+  text-align: center;
+  border-bottom: 1px solid #61065b;
+}
+
+.usuarios-tabla th { font-weight: bold; }
+.usuarios-tabla td { font-weight: normal; }
+
+.usuarios-tabla thead {
+  background: #61065b;
+  color: #fff;
+}
+
+.usuarios-tabla tbody tr {
+  background-color: #fff;
+  color: #61065b;
+}
+
+.usuarios-tabla tbody tr:hover {
+  background-color: #f7f0f7;
+}
+
+.usuarios-tabla tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Badges de rol y estado ── */
+.usuarios-badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+.usuarios-badge--rol-admin    { background: #ffd700; color: #5a4500; }
+.usuarios-badge--rol-cliente  { background: #61065b; color: #ffffff; }
+
+.usuarios-badge--activo   { background: #2e9e2e; color: #ffffff; }
+.usuarios-badge--inactivo { background: #e53935; color: #ffffff; }
+
+/* ── Acciones (lápiz / tacho) ── */
+.usuarios-acciones {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.usuarios-btn-accion {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.15rem;
+  transition: transform 0.15s ease;
+  display: flex;
+  align-items: center;
+}
+
+.usuarios-btn-accion:hover { transform: scale(1.15); }
+
+.usuarios-btn-editar   { color: #61065b; }
+.usuarios-btn-eliminar { color: #dc2626; }
+
+@media (max-width: 640px) {
+  .usuarios-tabla th, .usuarios-tabla td { padding: 9px 8px; font-size: 0.83rem; }
+}

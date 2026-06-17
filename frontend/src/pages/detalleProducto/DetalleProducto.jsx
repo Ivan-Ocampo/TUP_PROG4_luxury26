@@ -90,7 +90,12 @@ const DetalleProducto = () => {
           
           {/* Requisito: Precio */}
           <p className="detalle-precio">${producto.precio}</p>
-          
+
+          {/* Requisito: Stock */}
+          <p className={`detalle-stock ${Number(producto.stock) <= 0 ? 'detalle-stock--agotado' : ''}`}>
+            {Number(producto.stock) > 0 ? `Stock disponible: ${producto.stock}` : 'Sin stock'}
+          </p>
+
           {/* Requisito: Descripción */}
           <div className="detalle-descripcion">
             <h3>Descripción:</h3>

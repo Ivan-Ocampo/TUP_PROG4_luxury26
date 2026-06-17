@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const ordenCompraController = require('../controllers/ordenCompraController');
+const { generarOrden, obtenerOrdenesPorUsuario, marcarEntregada, obtenerOrdenesAdmin } = require('../controllers/ordenCompraController');
+const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
 
-// Generar una nueva orden de compra a partir del carrito del usuario (Checkout)
-router.post('/:usuarioId', ordenCompraController.generarOrden);
+// Panel de administrador (acepta ?estado=&busqueda=&numeroOrden=)
+router.get('/admin', authMiddleware, adminMiddleware, obtenerOrdenesAdmin);
 
-// Obtener el historial de compras de un usuario específico
-router.get('/usuario/:usuarioId', ordenCompraController.obtenerOrdenesPorUsuario);
+// Generar orden a partir del carrito del usuario
+router.post('/:usuarioId', authMiddleware, generarOrden);
 
-// Obtener todas las órdenes de la tienda (Para el panel del Administrador)
-router.get('/', ordenCompraController.obtenerTodasLasOrdenes);
+// Historial del usuario (acepta ?estado=activa|entregada)
+router.get('/usuario/:usuarioId', authMiddleware, obtenerOrdenesPorUsuario);
+
+// Marcar una orden como entregada (la usan el cliente en "Mis Compras" y el admin)
+router.patch('/:id/entregar', authMiddleware, marcarEntregada);
 
 module.exports = router;

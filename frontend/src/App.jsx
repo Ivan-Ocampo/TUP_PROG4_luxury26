@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { useCart } from './context/CartContext';
 
 import AdminRoute from './components/adminRoute/AdminRoute';
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import Navbar from './components/navigation/Navbar';
 import Footer from './components/footer/Footer';
 import { CartProvider } from './context/CartContext';
@@ -18,6 +19,9 @@ import EditarProducto from './pages/editarProducto/EditarProducto';
 import MiPerfil from './pages/miPerfil/MiPerfil';
 import Carrito from './pages/carrito/Carrito';
 import ConfirmarCompra from './pages/confirmarCompra/ConfirmarCompra';
+import Recibo from './pages/recibo/Recibo';
+import MisCompras from './pages/misCompras/MisCompras';
+import AdminOrdenes from './pages/adminOrdenes/AdminOrdenes';
 import ForgotPassword from './pages/forgotpassword/Forgotpassword';
 import ResetPassword from './pages/resetPassword/ResetPassword';
 
@@ -39,15 +43,20 @@ function App() {
 
           <main className="main-content">
           <Routes>
+            {/* Rutas públicas */}
             <Route path="/" element={<Catalogo />} />
             <Route path="/producto/:id" element={<DetalleProducto />} />
-            <Route path="/carrito" element={<Carrito />} />
             <Route path="/login" element={<Login />} />
             <Route path="/registro" element={<Registro />} />
-            <Route path="/mi-Perfil" element={<MiPerfil />} />
-            <Route path="/confirmar-compra" element={<ConfirmarCompra />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+
+            {/* Rutas que requieren usuario autenticado */}
+            <Route path="/carrito" element={<ProtectedRoute><Carrito /></ProtectedRoute>} />
+            <Route path="/mi-Perfil" element={<ProtectedRoute><MiPerfil /></ProtectedRoute>} />
+            <Route path="/confirmar-compra" element={<ProtectedRoute><ConfirmarCompra /></ProtectedRoute>} />
+            <Route path="/recibo" element={<ProtectedRoute><Recibo /></ProtectedRoute>} />
+            <Route path="/mis-compras" element={<ProtectedRoute><MisCompras /></ProtectedRoute>} />
 
             <Route
               path="/admin/altaProducto"
@@ -60,6 +69,10 @@ function App() {
             <Route
               path="/admin/editarProducto/:id"
               element={<AdminRoute><EditarProducto /></AdminRoute>}
+            />
+            <Route
+              path="/admin/ordenes"
+              element={<AdminRoute><AdminOrdenes /></AdminRoute>}
             />
           </Routes>
           </main>

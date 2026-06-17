@@ -13,13 +13,18 @@ const EditarProducto = () => {
     nombre: '',
     descripcion: '',
     precio: '',
+    stock: '',
     imagenUrl: '',
     categoriaId: '',
-    activo: true 
+    activo: true
   });
 
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState('');
+  const [exito, setExito] = useState('');
+  const [modalStockAbierto, setModalStockAbierto] = useState(false);
+  const [deltaStock, setDeltaStock] = useState('');
+  const [operacion, setOperacion] = useState('+');
 
   // --- Estados para Categorías y el Modal ---
   const [categorias, setCategorias] = useState([]);
@@ -42,9 +47,10 @@ const EditarProducto = () => {
           nombre: producto.nombre,
           descripcion: producto.descripcion,
           precio: producto.precio,
+          stock: producto.stock ?? '',
           imagenUrl: producto.imagenUrl,
           categoriaId: producto.categoriaId?._id || producto.categoriaId || '',
-          activo: producto.activo !== undefined ? producto.activo : true 
+          activo: producto.activo !== undefined ? producto.activo : true
         });
       } catch (err) {
         setError('Error al cargar los datos del producto o categorías.');
@@ -99,8 +105,8 @@ const EditarProducto = () => {
     e.preventDefault();
     try {
       await actualizarProducto(id, formData);
-      alert('¡Producto actualizado con éxito!');
-      navigate('/'); 
+      setExito('¡Producto actualizado con éxito!');
+      setTimeout(() => navigate('/'), 2000);
     } catch (err) {
       console.error("Error al actualizar:", err);
       setError('Hubo un error al actualizar el producto.');
@@ -113,6 +119,11 @@ const EditarProducto = () => {
     <div className="form-container">
       <h2>Editar Producto</h2>
       
+      {exito && (
+        <div style={{ background: '#e8f5e9', border: '1.5px solid #4caf50', color: '#2e7d32', borderRadius: '8px', padding: '12px 16px', marginBottom: '16px', textAlign: 'center', fontWeight: '600', fontSize: '1rem' }}>
+          ✓ {exito}
+        </div>
+      )}
       {error && <div style={{ color: 'red', marginBottom: '15px', textAlign: 'center' }}>{error}</div>}
 
       <form onSubmit={handleSubmit} className="joya-form">
@@ -136,6 +147,26 @@ const EditarProducto = () => {
             onChange={handleChange}
             required
           />
+        </div>
+
+        <div className="form-group">
+          <label>Stock:</label>
+          <div style={{ display: 'flex', alignItems: 'stretch', gap: '12px', width: '100%' }}>
+            <input
+              type="number"
+              name="stock"
+              value={formData.stock}
+              readOnly
+              style={{ flex: 1, minWidth: 0, backgroundColor: '#ffffff', cursor: 'default' }}
+            />
+            <button
+              type="button"
+              onClick={() => { setDeltaStock(''); setOperacion('+'); setModalStockAbierto(true); }}
+              style={{ padding: '14px 20px', background: '#61065b', color: '#fff', border: 'none', borderRadius: '8px', fontWeight: '600', fontSize: '1rem', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}
+            >
+              Actualizar
+            </button>
+          </div>
         </div>
 
         {/* --- CAMPO DE CATEGORÍA AGREGADO --- */}
@@ -206,6 +237,81 @@ const EditarProducto = () => {
           <button type="button" className="btn-cancel" onClick={() => navigate('/')}>Cancelar</button>
         </div>
       </form>
+
+      {/* MODAL DE ACTUALIZACIÓN DE STOCK */}
+      {modalStockAbierto && (
+        <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
+          <div style={{ backgroundColor: 'white', padding: '28px', borderRadius: '12px', width: '100%', maxWidth: '360px', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' }}>
+            <h3 style={{ margin: '0 0 6px', color: '#61065b' }}>Actualizar stock</h3>
+            <p style={{ margin: '0 0 18px', color: '#555', fontSize: '0.9rem' }}>
+              Stock actual: <strong>{formData.stock}</strong>
+            </p>
+
+            <div style={{ display: 'flex', gap: '8px', marginBottom: '14px' }}>
+              <button
+                type="button"
+                onClick={() => setOperacion('+')}
+                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: `2px solid ${operacion === '+' ? '#61065b' : '#333333'}`, background: operacion === '+' ? '#61065b' : '#e0e0e0', color: operacion === '+' ? '#fff' : '#333', fontWeight: '700', fontSize: '1rem', cursor: 'pointer' }}
+              >
+                + Agregar
+              </button>
+              <button
+                type="button"
+                onClick={() => setOperacion('-')}
+                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: `2px solid ${operacion === '-' ? '#61065b' : '#333333'}`, background: operacion === '-' ? '#61065b' : '#e0e0e0', color: operacion === '-' ? '#fff' : '#333', fontWeight: '700', fontSize: '1rem', cursor: 'pointer' }}
+              >
+                − Restar
+              </button>
+            </div>
+
+            <input
+              type="number"
+              min="1"
+              placeholder="Cantidad"
+              value={deltaStock}
+              onChange={e => setDeltaStock(e.target.value)}
+              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #333333', boxSizing: 'border-box', fontSize: '1rem', marginBottom: '8px', backgroundColor: '#ffffff', color: '#333333' }}
+            />
+
+            {deltaStock && Number(deltaStock) > 0 && (() => {
+              const excede = operacion === '-' && Number(deltaStock) > Number(formData.stock);
+              const resultado = operacion === '+' ? Number(formData.stock) + Number(deltaStock) : Number(formData.stock) - Number(deltaStock);
+              return excede ? (
+                <p style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#c0392b' }}>
+                  No se puede restar {deltaStock} — el stock quedaría en {resultado}. Máximo a restar: <strong>{formData.stock}</strong>.
+                </p>
+              ) : (
+                <p style={{ margin: '0 0 14px', fontSize: '0.88rem', color: '#61065b' }}>
+                  Stock actualizado: <strong>{resultado}</strong>
+                </p>
+              );
+            })()}
+
+            <div style={{ display: 'flex', gap: '10px', marginTop: '6px' }}>
+              <button
+                type="button"
+                disabled={!deltaStock || Number(deltaStock) <= 0 || (operacion === '-' && Number(deltaStock) > Number(formData.stock))}
+                onClick={() => {
+                  const delta = Number(deltaStock);
+                  const nuevoStock = operacion === '+' ? Number(formData.stock) + delta : Number(formData.stock) - delta;
+                  setFormData({ ...formData, stock: nuevoStock });
+                  setModalStockAbierto(false);
+                }}
+                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: 'none', background: '#61065b', color: '#fff', fontWeight: '700', fontSize: '1rem', cursor: 'pointer', boxShadow: '2px 2px 8px gray', opacity: (!deltaStock || Number(deltaStock) <= 0 || (operacion === '-' && Number(deltaStock) > Number(formData.stock))) ? 0.5 : 1 }}
+              >
+                Confirmar
+              </button>
+              <button
+                type="button"
+                onClick={() => setModalStockAbierto(false)}
+                style={{ flex: 1, padding: '10px', borderRadius: '8px', border: '1px solid #d4af37', background: 'transparent', color: '#d4af37', fontWeight: 'bold', fontSize: '1rem', cursor: 'pointer', boxShadow: '2px 2px 8px gray' }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* MODAL FLOTANTE DE NUEVA CATEGORÍA */}
       {modalCategoriaAbierto && (

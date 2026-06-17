@@ -1,0 +1,175 @@
+.recibo-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+.recibo-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  padding: 40px 44px;
+}
+
+.recibo-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.recibo-logo {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #61065b;
+}
+
+.recibo-titulo {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #61065b;
+  margin: 0 0 4px;
+}
+
+.recibo-nro, .recibo-fecha {
+  margin: 2px 0;
+  font-size: 0.95rem;
+  color: #61065b;
+}
+
+.recibo-divisor {
+  border: none;
+  border-top: 1px solid #61065b;
+  margin: 20px 0;
+}
+
+.recibo-seccion-titulo {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #61065b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0 0 12px;
+}
+
+.recibo-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 24px;
+  font-size: 0.93rem;
+  color: #333;
+}
+
+.recibo-grid-2 span {
+  font-weight: 600;
+  color: #61065b;
+}
+
+.recibo-label-dir {
+  font-weight: 700;
+  color: #61065b;
+  margin-bottom: 4px;
+}
+
+/* ── Tabla de productos ── */
+.recibo-tabla {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.recibo-tabla th,
+.recibo-tabla td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #61065b;
+}
+
+.recibo-tabla th { font-weight: bold; }
+.recibo-tabla td { font-weight: normal; }
+
+.recibo-tabla thead {
+  background: #61065b;
+  color: #fff;
+}
+
+.recibo-tabla tbody tr {
+  background-color: #fff;
+  color: #61065b;
+}
+
+.recibo-center { text-align: center; }
+.recibo-right  { text-align: right; }
+
+.recibo-total-row td {
+  background: #f7f0f7;
+  border-top: 2px solid #61065b;
+  border-bottom: none;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #61065b;
+}
+
+.recibo-pago {
+  margin: 4px 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* ── Acciones ── */
+.recibo-acciones {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+
+.recibo-btn-imprimir,
+.recibo-btn-compras,
+.recibo-btn-inicio {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.recibo-btn-imprimir { background: #61065b; color: #fff; }
+.recibo-btn-compras  { background: #61065b; color: #fff; }
+.recibo-btn-inicio   { background: #eee;    color: #333; }
+
+.recibo-btn-imprimir:hover,
+.recibo-btn-compras:hover { background: #7d0875; }
+.recibo-btn-inicio:hover  { background: #ddd; }
+
+.recibo-sin-datos {
+  color: #61065b;
+  font-size: 1.1rem;
+  padding: 40px 0;
+  text-align: center;
+}
+
+.recibo-sin-datos button {
+  background: #61065b;
+  color: #fff;
+  border: none;
+  padding: 8px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+@media print {
+  .recibo-acciones { display: none; }
+  .recibo-container { padding: 0; }
+  .recibo-card { box-shadow: none; border-radius: 0; }
+}
+
+@media (max-width: 600px) {
+  .recibo-card { padding: 24px 16px; }
+  .recibo-grid-2 { grid-template-columns: 1fr; }
+  .recibo-acciones { flex-direction: column; }
+}

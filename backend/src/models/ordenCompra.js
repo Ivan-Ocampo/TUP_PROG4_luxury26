@@ -52,8 +52,13 @@ const ordenCompraSchema = new mongoose.Schema({
   // Hasta 2 formas de pago; sus montos deben sumar el total
   pagos: { type: [pagoSchema], validate: [v => v.length >= 1 && v.length <= 2, 'Entre 1 y 2 formas de pago'] },
 
+  estado:       { type: String, enum: ['activa', 'entregada'], default: 'activa' },
+  fechaEntrega: { type: Date },
+  numeroOrden:  { type: Number },
+
   fechaCreacion: { type: Date, default: Date.now }
 });
+
 
 const OrdenCompra = mongoose.model('OrdenCompra', ordenCompraSchema);
 

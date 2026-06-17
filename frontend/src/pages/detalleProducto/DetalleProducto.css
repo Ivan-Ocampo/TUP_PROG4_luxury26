@@ -67,6 +67,17 @@ body {
   color: #000000;
 }
 
+.detalle-stock {
+  margin: 8px 0 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1a7a1a;
+}
+
+.detalle-stock--agotado {
+  color: #c0392b;
+}
+
 .detalle-descripcion {
   color: #000000;
   line-height: 1.6;

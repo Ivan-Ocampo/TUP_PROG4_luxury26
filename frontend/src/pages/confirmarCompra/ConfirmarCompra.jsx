@@ -18,7 +18,7 @@ const tarjetaVacia = () => ({ numero: '', titular: '', dniTitular: '', vencimien
 
 const ConfirmarCompra = () => {
   const navigate = useNavigate();
-  const { items, total, vaciarCarrito } = useCart();
+  const { items, total } = useCart();
   const usuarioId = getUserIdFromToken();
 
   // ── Datos del formulario ─────────────────────────────────────────────────
@@ -164,10 +164,10 @@ const ConfirmarCompra = () => {
 
     try {
       setCargando(true);
-      await generarOrdenApi(usuarioId, datosFacturacion, pagosPayload);
-      navigate('/');
+      const resultado = await generarOrdenApi(usuarioId, datosFacturacion, pagosPayload);
+      navigate('/recibo', { state: { orden: resultado.orden } });
     } catch (err) {
-      setError(err.response?.data?.mensaje || 'Error al procesar la compra.');
+      setError(err.response?.data?.error || err.response?.data?.mensaje || 'Error al procesar la compra.');
     } finally {
       setCargando(false);
     }

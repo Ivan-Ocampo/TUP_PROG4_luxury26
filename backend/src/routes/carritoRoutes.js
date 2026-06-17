@@ -1,6 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const carritoController = require('../controllers/carritoController');
+const { authMiddleware } = require('../middleware/authMiddleware');
+
+// Todas las operaciones del carrito requieren usuario autenticado
+router.use(authMiddleware);
 
 // Obtener el carrito de un usuario específico
 router.get('/:usuarioId', carritoController.obtenerCarrito);

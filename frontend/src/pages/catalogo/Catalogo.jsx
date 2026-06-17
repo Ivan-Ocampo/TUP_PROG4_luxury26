@@ -88,6 +88,7 @@ const Catalogo = () => {
                 imagenUrl={producto.imagenUrl}
                 descripcion={producto.descripcion}
                 precio={producto.precio}
+                stock={producto.stock}
                 categoriaId={producto.categoriaId}
                 onAddToCart={() => console.log("Agregar al carrito")}
                 esAdmin={esAdmin}

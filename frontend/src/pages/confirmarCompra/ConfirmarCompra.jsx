@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
-import { obtenerPerfil } from '../../services/usuarioService';
+import { obtenerPerfil, actualizarPerfil } from '../../services/usuarioService';
 import { generarOrdenApi } from '../../services/ordenCompraService';
 import { getUserIdFromToken } from '../../utils/auth';
 import { PROVINCIAS } from '../../utils/argentina';
@@ -164,6 +164,23 @@ const ConfirmarCompra = () => {
 
     try {
       setCargando(true);
+
+      // 1) Guardamos los datos en el perfil. Si esto falla, NO se confirma la compra
+      //    (no se genera la orden ni se descuenta stock).
+      try {
+        await actualizarPerfil({
+          nombre:   form.nombre,
+          apellido: form.apellido,
+          dni:      form.dni,
+          telefono: form.telefono,
+          direccionFacturacion: form.facturacion,
+          direccionEntrega:     entregaIgual ? form.facturacion : form.entrega,
+        });
+      } catch {
+        return setError('No se pudieron guardar tus datos. La compra no se confirmó. Revisá los datos e intentá de nuevo.');
+      }
+
+      // 2) Con los datos ya guardados, generamos la orden
       const resultado = await generarOrdenApi(usuarioId, datosFacturacion, pagosPayload);
       navigate('/recibo', { state: { orden: resultado.orden } });
     } catch (err) {

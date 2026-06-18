@@ -10,6 +10,8 @@ const Registro = () => {
 
   const [formData, setFormData] = useState({
     nombre: '',
+    apellido: '',
+    dni: '',
     email: '',
     password: '',
     repetirPassword: ''
@@ -69,13 +71,40 @@ const Registro = () => {
 
       <form onSubmit={handleSubmit} className="joya-form">
         <div className="form-group">
-          <label>Nombre Completo:</label>
+          <label>Nombre:</label>
           <input
             type="text"
             name="nombre"
             value={formData.nombre}
             onChange={handleChange}
-            placeholder="Ej: Juan Pérez"
+            placeholder="Ej: Juan"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Apellido:</label>
+          <input
+            type="text"
+            name="apellido"
+            value={formData.apellido}
+            onChange={handleChange}
+            placeholder="Ej: Pérez"
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label>DNI:</label>
+          <input
+            type="text"
+            name="dni"
+            value={formData.dni}
+            onChange={handleChange}
+            placeholder="Ej: 30123456"
+            inputMode="numeric"
+            pattern="[0-9]+"
+            title="Ingresá solo números"
             required
           />
         </div>

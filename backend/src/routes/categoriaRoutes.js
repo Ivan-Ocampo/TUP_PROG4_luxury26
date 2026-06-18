@@ -10,7 +10,7 @@ router.post('/', authMiddleware, adminMiddleware, categoriaController.crearCateg
 router.get('/', categoriaController.obtenerCategorias);
 
 // Modificar una categoría
-router.put('/:id', categoriaController.modificarCategoria);
+router.put('/:id', authMiddleware, adminMiddleware, categoriaController.modificarCategoria);
 
 // Baja lógica de una categoría
 router.patch('/:id/baja', authMiddleware, adminMiddleware, categoriaController.bajaLogicaCategoria);

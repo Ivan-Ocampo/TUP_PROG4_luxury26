@@ -1,3 +1,70 @@
+/* ── Filtros de búsqueda ── */
+.usuarios-filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: flex-end;
+  margin: 8px 0 4px;
+}
+
+.usuarios-filtro-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.usuarios-filtro-grupo--wide {
+  flex: 2;
+  min-width: 240px;
+}
+
+.usuarios-filtro-grupo label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #61065b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.usuarios-filtro-grupo input,
+.usuarios-filtro-grupo select {
+  padding: 9px 12px;
+  border: 1.5px solid #d8c8d8;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  color: #222;
+  background: #fff;
+}
+
+.usuarios-filtro-grupo input:focus,
+.usuarios-filtro-grupo select:focus {
+  outline: none;
+  border-color: #61065b;
+  box-shadow: 0 0 0 3px rgba(97, 6, 91, 0.12);
+}
+
+.usuarios-btn-limpiar {
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  background: #eee;
+  color: #333;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.usuarios-btn-limpiar:hover { background: #ddd; }
+
+.usuarios-sin-resultados {
+  text-align: center;
+  color: #61065b;
+  font-weight: 600;
+  padding: 24px 0 !important;
+}
+
 /* ── Tabla de usuarios (mismo estilo que Gestión de Órdenes) ── */
 .usuarios-tabla-wrapper {
   width: 100%;
@@ -8,7 +75,7 @@
 
 .usuarios-tabla {
   width: 100%;
-  min-width: 640px;
+  min-width: 720px;
   border-collapse: collapse;
   background: #fff;
   border-radius: 10px;
@@ -84,4 +151,182 @@
 
 @media (max-width: 640px) {
   .usuarios-tabla th, .usuarios-tabla td { padding: 9px 8px; font-size: 0.83rem; }
+}
+
+/* ====================================================================== */
+/* Modal de edicion de usuario (con tabs)                                 */
+/* ====================================================================== */
+.usuarios-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+}
+
+.usuarios-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px 26px;
+  width: 100%;
+  max-width: 580px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.usuarios-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 14px;
+}
+
+.usuarios-modal-titulo {
+  margin: 0;
+  color: #61065b;
+  font-size: 1.2rem;
+}
+
+.usuarios-modal-cerrar {
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: #999;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+.usuarios-modal-cerrar:hover { color: #61065b; }
+
+/* Tabs */
+.usuarios-modal-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.usuarios-modal-tab {
+  -webkit-appearance: none;
+  appearance: none;
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 16px;
+  border: 2px solid #d8c8e8;
+  border-radius: 999px;
+  background: #fff;
+  color: #7a6090;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.usuarios-modal-tab:hover {
+  background: #ede5f8;
+  border-color: #9b59b6;
+  color: #5a189a;
+}
+.usuarios-modal-tab.activa {
+  background: #61065b;
+  border-color: #61065b;
+  color: #fff;
+}
+
+/* Formulario */
+.usuarios-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+}
+
+.usuarios-form-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: left;
+}
+
+.usuarios-form-grupo--full { grid-column: 1 / -1; }
+
+.usuarios-form-grupo label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #61065b;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.usuarios-form-grupo input,
+.usuarios-form-grupo select {
+  padding: 9px 11px;
+  border: 1.5px solid #d8c8d8;
+  border-radius: 8px;
+  font-size: 0.92rem;
+  color: #222;
+  background: #fff;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.usuarios-form-grupo input:focus,
+.usuarios-form-grupo select:focus {
+  outline: none;
+  border-color: #61065b;
+  box-shadow: 0 0 0 3px rgba(97, 6, 91, 0.12);
+}
+
+.usuarios-form-grupo input:read-only {
+  background: #f5f5f5;
+  color: #888;
+}
+
+/* Rol y Estado, fuera de los tabs */
+.usuarios-rol-estado {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 16px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 2px solid #e8d8e8;
+}
+
+/* Acciones */
+.usuarios-modal-acciones {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.usuarios-modal-btn-cancelar {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  background: #fff;
+  color: #555;
+  font-weight: 600;
+  cursor: pointer;
+}
+.usuarios-modal-btn-cancelar:hover { background: #f5f5f5; }
+
+.usuarios-modal-btn-guardar {
+  padding: 10px 18px;
+  border-radius: 8px;
+  border: none;
+  background: #61065b;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+.usuarios-modal-btn-guardar:hover { background: #7d0875; }
+
+@media (max-width: 540px) {
+  .usuarios-form-grid,
+  .usuarios-rol-estado { grid-template-columns: 1fr; }
 }

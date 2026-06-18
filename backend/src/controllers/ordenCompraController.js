@@ -14,6 +14,41 @@ const generarOrden = async (req, res) => {
       return res.status(400).json({ mensaje: 'El carrito está vacío' });
     }
 
+    // 1) Pre-validación: revisamos TODO el carrito y juntamos en una sola pasada
+    //    todos los productos sin stock, sin descontar nada todavía. Así el usuario
+    //    ve de una todos los problemas en lugar de reintentar uno por uno.
+    const productosSinStock = [];
+    for (let item of carrito.items) {
+      const info = await Producto.findById(item.productoId).select('nombre activo stock');
+      if (!info || !info.activo) {
+        productosSinStock.push({
+          productoId: String(item.productoId),
+          nombre: info?.nombre ?? 'Producto',
+          solicitado: item.cantidad,
+          disponible: 0,
+          motivo: 'no disponible'
+        });
+      } else if (info.stock < item.cantidad) {
+        productosSinStock.push({
+          productoId: String(item.productoId),
+          nombre: info.nombre,
+          solicitado: item.cantidad,
+          disponible: info.stock,
+          motivo: 'stock insuficiente'
+        });
+      }
+    }
+
+    if (productosSinStock.length > 0) {
+      return res.status(409).json({
+        mensaje: 'Algunos productos no tienen stock suficiente para tu pedido.',
+        productosSinStock
+      });
+    }
+
+    // 2) Descuento atómico. El filtro stock>=cantidad protege ante concurrencia:
+    //    si entre la validación y este punto otro usuario compró, revertimos lo
+    //    descontado y avisamos del producto afectado.
     const itemsEmbebidos = [];
     const stockDescontado = [];
 
@@ -29,10 +64,16 @@ const generarOrden = async (req, res) => {
           await Producto.findByIdAndUpdate(id, { $inc: { stock: cantidad } });
         }
         const info = await Producto.findById(item.productoId).select('nombre activo stock');
-        const motivo = !info || !info.activo
-          ? 'ya no está disponible'
-          : `stock insuficiente (disponible: ${info?.stock ?? 0})`;
-        return res.status(400).json({ mensaje: `Producto "${info?.nombre ?? item.productoId}": ${motivo}.` });
+        return res.status(409).json({
+          mensaje: 'Algunos productos no tienen stock suficiente para tu pedido.',
+          productosSinStock: [{
+            productoId: String(item.productoId),
+            nombre: info?.nombre ?? 'Producto',
+            solicitado: item.cantidad,
+            disponible: info?.activo ? (info?.stock ?? 0) : 0,
+            motivo: info?.activo ? 'stock insuficiente' : 'no disponible'
+          }]
+        });
       }
 
       stockDescontado.push({ id: producto._id, cantidad: item.cantidad });

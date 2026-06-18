@@ -82,7 +82,14 @@ Archivo frontend/.env:
 - Recuperación de contraseña por correo electrónico (token temporal de un solo uso).
 - Catálogo de productos: nombre, precio, categoría, descripción y stock.
 - Carrito de compras: agregar, modificar cantidades, eliminar, vaciar y ver total.
-- Órdenes de compra: generación, asociación al usuario, descuento de stock, número de orden autoincremental, historial y detalle.
+  Si un producto queda con stock insuficiente, se conserva en el carrito resaltado
+  mostrando el stock disponible para ajustar la cantidad (solo se eliminan los
+  productos dados de baja o inactivos).
+- Órdenes de compra: generación, asociación al usuario, descuento de stock, número
+  de orden autoincremental, historial y detalle. La confirmación valida el stock de
+  todo el carrito de forma atómica: si algún producto no alcanza, la compra se
+  bloquea, se avisa al usuario con el detalle de los faltantes y el carrito se
+  conserva intacto.
 - Perfil de usuario: ver y editar datos personales, cambiar contraseña.
 - Panel de administrador: ABM de productos (con baja lógica y stock), gestión de usuarios (editar, baja lógica y recuperar) y visualización de órdenes.
 - Estado global mediante Context API y persistencia de sesión con localStorage.

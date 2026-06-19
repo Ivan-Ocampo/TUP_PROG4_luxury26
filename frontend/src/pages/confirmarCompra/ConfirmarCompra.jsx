@@ -40,6 +40,7 @@ const ConfirmarCompra = () => {
 
   const [cargando, setCargando] = useState(false);
   const [error, setError]       = useState('');
+  const [productosSinStock, setProductosSinStock] = useState([]); // para el popup de stock
 
   // ── Autocompletar desde el perfil del usuario ────────────────────────────
   useEffect(() => {
@@ -184,7 +185,13 @@ const ConfirmarCompra = () => {
       const resultado = await generarOrdenApi(usuarioId, datosFacturacion, pagosPayload);
       navigate('/recibo', { state: { orden: resultado.orden } });
     } catch (err) {
-      setError(err.response?.data?.error || err.response?.data?.mensaje || 'Error al procesar la compra.');
+      const data = err.response?.data;
+      // Si el backend reporta productos sin stock, mostramos el popup en vez del error inline.
+      if (data?.productosSinStock?.length) {
+        setProductosSinStock(data.productosSinStock);
+      } else {
+        setError(data?.error || data?.mensaje || 'Error al procesar la compra.');
+      }
     } finally {
       setCargando(false);
     }
@@ -310,6 +317,37 @@ const ConfirmarCompra = () => {
         </div>
 
       </form>
+
+      {/* ── POPUP: productos sin stock ──────────────────────────────────── */}
+      {productosSinStock.length > 0 && (
+        <div className="checkout-modal-overlay" onClick={() => setProductosSinStock([])}>
+          <div className="checkout-modal-box" onClick={(e) => e.stopPropagation()}>
+            <h3 className="checkout-modal-titulo">Stock insuficiente</h3>
+            <p className="checkout-modal-texto">
+              No pudimos completar tu compra porque estos productos ya no tienen stock suficiente:
+            </p>
+            <ul className="checkout-modal-lista">
+              {productosSinStock.map((p) => (
+                <li key={p.productoId}>
+                  <strong>{p.nombre}</strong>: pediste {p.solicitado},{' '}
+                  {p.disponible > 0 ? `solo quedan ${p.disponible}` : 'sin stock disponible'}
+                </li>
+              ))}
+            </ul>
+            <p className="checkout-modal-texto">
+              Tu carrito quedó intacto. Ajustá las cantidades desde el carrito y volvé a intentar.
+            </p>
+            <div className="checkout-modal-acciones">
+              <button type="button" className="checkout-btn-volver" onClick={() => setProductosSinStock([])}>
+                Cerrar
+              </button>
+              <button type="button" className="checkout-btn-confirmar" onClick={() => navigate('/carrito')}>
+                Ir al carrito
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

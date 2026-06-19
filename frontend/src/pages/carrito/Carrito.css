@@ -58,6 +58,22 @@
   background-color: #f7f0f7;
 }
 
+/* Fila con cantidad que supera el stock disponible */
+.carrito-tabla tbody tr.carrito-fila-sin-stock {
+  background-color: #fff3cd;
+}
+
+.carrito-tabla tbody tr.carrito-fila-sin-stock:hover {
+  background-color: #ffeeba;
+}
+
+.carrito-stock-aviso {
+  margin-top: 6px;
+  color: #c0392b;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
 .carrito-cantidad-control {
   display: flex;
   align-items: center;
@@ -299,4 +315,36 @@
 .carrito-confirm-acciones button:last-child {
   background: #eee;
   color: #333;
+}
+
+/* Modal de stock insuficiente al finalizar */
+.carrito-stock-modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 28px;
+  max-width: 440px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  color: #333;
+}
+
+.carrito-stock-modal-titulo {
+  color: #c0392b;
+  text-align: center;
+  margin: 0 0 14px;
+  font-size: 1.3rem;
+}
+
+.carrito-stock-modal p {
+  margin: 10px 0;
+  font-size: 0.92rem;
+}
+
+.carrito-stock-modal-lista {
+  margin: 12px 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.92rem;
 }

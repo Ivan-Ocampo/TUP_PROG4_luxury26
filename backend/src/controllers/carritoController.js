@@ -2,19 +2,22 @@ const { Carrito } = require('../models/carrito');
 const { Producto } = require('../models/producto');
 const { Notificacion } = require('../models/notificacion');
 
-// ─────────────────────────────────────────────────────────────────────────────
+
 // Función auxiliar reutilizada por obtenerCarrito y por authController (login).
 // Recibe el documento carrito ya cargado y devuelve los nombres de los productos
 // que fueron eliminados por falta de stock.
-// ─────────────────────────────────────────────────────────────────────────────
+
 const verificarYLimpiarStock = async (carrito) => {
   const eliminados = [];
 
-  // Filtramos conservando solo los items con stock suficiente
+  // Solo quitamos del carrito los productos que ya NO se pueden comprar de ninguna
+  // forma (borrados o inactivos). Los que siguen activos pero tienen stock
+  // insuficiente se CONSERVAN: así el usuario puede ajustar la cantidad en vez de
+  // perder el producto sin aviso. El bloqueo por stock se hace al finalizar la compra.
   const itemsValidos = [];
   for (const item of carrito.items) {
     const producto = await Producto.findById(item.productoId);
-    if (!producto || !producto.activo || producto.stock < item.cantidad) {
+    if (!producto || !producto.activo) {
       // Guardamos el nombre para notificar al usuario
       eliminados.push(producto ? producto.nombre : `Producto ${item.productoId}`);
     } else {

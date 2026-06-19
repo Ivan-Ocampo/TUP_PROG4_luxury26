@@ -66,7 +66,7 @@ const DetalleProducto = () => {
   // Si el backend responde pero el producto no existe (ej. alguien escribió mal la URL)
   if (!producto) return <Spinner color="red" texto="Producto no encontrado." />;
 
-  // 5. Renderizado del detalle completo (Cumpliendo los requisitos de tu consigna)
+  // 5. Renderizado del detalle completo 
   return (
     <div className="detalle-container">
       <div className="detalle-layout">

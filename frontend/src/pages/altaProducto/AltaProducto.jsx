@@ -64,7 +64,7 @@ const AltaProducto = () => {
       //Resetea el select para que no quede trabado en "+ Nueva categoría"
       setFormData({ ...formData, categoria: '' });
     } else {
-      // Si elige una categoría normal, usa tu handleChange de siempre
+      // Si elige una categoría normal, usa handleChange
       handleChange(e);
     }
   };
@@ -78,7 +78,7 @@ const handleGuardarNuevaCategoria = async (e) => {
       //Agregamos la nueva categoría a la lista del select
       setCategorias([...categorias, nuevaCategoriaCreada]);
       
-      //La dejamos ya seleccionada en el formulario del producto
+      //La deja seleccionado en el formulario del producto
       setFormData({ ...formData, categoria: nuevaCategoriaCreada._id });
       
       //Limpiamos y cerramos

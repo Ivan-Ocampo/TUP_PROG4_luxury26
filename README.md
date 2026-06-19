@@ -4,7 +4,7 @@ Aplicación web full stack de tienda online (e-commerce) de joyería, desarrolla
 
 Integra autenticación de usuarios con JWT, recuperación de contraseña por correo, gestión completa de carrito y órdenes de compra, control de stock, diferenciación de roles (cliente / administrador) y un panel de administración.
 
-Integrantes: Espinosa Ezequiel, Maldonado Carlos, Ocampo Iván y Sanchez Mauricio.
+Integrantes: Espinosa Ezequiel, Maldonado Carlos, Ocampo Iván y Sánchez Mauricio.
 
 
 ## Arquitectura

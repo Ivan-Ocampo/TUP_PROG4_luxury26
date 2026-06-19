@@ -2,11 +2,11 @@ const { Carrito } = require('../models/carrito');
 const { Producto } = require('../models/producto');
 const { Notificacion } = require('../models/notificacion');
 
-// ─────────────────────────────────────────────────────────────────────────────
+
 // Función auxiliar reutilizada por obtenerCarrito y por authController (login).
 // Recibe el documento carrito ya cargado y devuelve los nombres de los productos
 // que fueron eliminados por falta de stock.
-// ─────────────────────────────────────────────────────────────────────────────
+
 const verificarYLimpiarStock = async (carrito) => {
   const eliminados = [];
 

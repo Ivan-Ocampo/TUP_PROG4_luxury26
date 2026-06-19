@@ -16,7 +16,7 @@ const generarOrden = async (req, res) => {
 
     // 1) Pre-validación: revisamos TODO el carrito y juntamos en una sola pasada
     //    todos los productos sin stock, sin descontar nada todavía. Así el usuario
-    //    ve de una todos los problemas en lugar de reintentar uno por uno.
+    //    ve  todos los problemas en lugar de reintentar uno por uno.
     const productosSinStock = [];
     for (let item of carrito.items) {
       const info = await Producto.findById(item.productoId).select('nombre activo stock');
